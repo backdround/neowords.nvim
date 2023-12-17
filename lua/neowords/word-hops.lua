@@ -1,0 +1,81 @@
+local rabbit_hop = require("neowords.rabbit-hop.api")
+
+local M = {}
+
+---@return "operator-pending"|"visual"|"normal"|"insert"
+local mode = function()
+  local m = tostring(vim.fn.mode(true))
+
+  if m:find("o") then
+    return "operator-pending"
+  elseif m:find("[vV]") then
+    return "visual"
+  elseif m:find("i") then
+    return "insert"
+  else
+    return "normal"
+  end
+end
+
+---Unites patterns into one pattern
+---@param ... string
+---@return string
+local unite_patterns = function(...)
+  local patterns = {...}
+
+  local result_pattern = "\\v(" .. table.remove(patterns, 1)
+  for _, pattern in ipairs(patterns) do
+    result_pattern = result_pattern .. "\\v|" .. pattern
+  end
+  result_pattern = result_pattern .. "\\v)"
+  return result_pattern
+end
+
+---@class NW_WordHops
+---@field forward_start function hop forward to a pattern start
+---@field forward_end function hop forward to a pattern end
+---@field backward_start function hop backward to a pattern start
+---@field backward_end function hop backward to a pattern end
+
+---Produces word hops
+---@param ... string
+---@return NW_WordHops
+M.get = function(...)
+  local pattern = unite_patterns(...)
+
+  return {
+    forward_start = function()
+      rabbit_hop.hop({
+        direction = "forward",
+        offset = mode() == "operator-pending" and "pre" or "start",
+        pattern = pattern,
+      })
+    end,
+
+    forward_end = function()
+      rabbit_hop.hop({
+        direction = "forward",
+        offset = "end",
+        pattern = pattern,
+      })
+    end,
+
+    backward_end = function()
+      rabbit_hop.hop({
+        direction = "backward",
+        offset = mode() == "operator-pending" and "pre" or "end",
+        pattern = pattern,
+      })
+    end,
+
+    backward_start = function()
+      rabbit_hop.hop({
+        direction = "backward",
+        offset = "start",
+        pattern = pattern,
+      })
+    end,
+  }
+end
+
+return M
