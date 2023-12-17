@@ -1,0 +1,158 @@
+*rabbit-hop.nvim.txt*             For NVIM v0.8.0            Last change: 2023
+
+==============================================================================
+Table of Contents                          *rabbit-hop.nvim-table-of-contents*
+
+1. Rabbit-hop.nvim                           |rabbit-hop.nvim-rabbit-hop.nvim|
+2. Configuration example               |rabbit-hop.nvim-configuration-example|
+3. Additional configuration examples|rabbit-hop.nvim-additional-configuration-examples|
+4. Plugin hop options                     |rabbit-hop.nvim-plugin-hop-options|
+
+==============================================================================
+1. Rabbit-hop.nvim                           *rabbit-hop.nvim-rabbit-hop.nvim*
+
+
+
+
+
+
+It’s a Neovim plugin that provides a flexible ability to hop to a user
+defined vim-pattern (quotes, brackets, numbers).
+
+Hops work:
+
+- in multiline;
+- in `normal`, `visual`, `operator-pending` and `insert` modes;
+- with non-ascii text;
+- with the `count` multiplier;
+- with the `dot` repetition.
+
+The plugin:
+
+- Can be used as api for other plugins;
+- Should be stable in corner cases (has lots of tests).
+
+
+==============================================================================
+2. Configuration example               *rabbit-hop.nvim-configuration-example*
+
+>lua
+    local rh = require("rabbit-hop")
+    
+    -- Hop forward inside round brackets.
+    vim.keymap.set({"n", "x", "o"}, "s", function()
+      rh.hop({
+        direction = "forward",
+        offset = "post",
+        pattern = "\\M(",
+      })
+    end)
+    
+    -- Hop backward inside round brackets.
+    vim.keymap.set({"n", "x", "o"}, "S", function()
+      rh.hop({
+        direction = "backward",
+        offset = "post",
+        pattern = "\\M)",
+      })
+    end)
+<
+
+
+==============================================================================
+3. Additional configuration examples*rabbit-hop.nvim-additional-configuration-examples*
+
+Hop to a number ~
+
+>lua
+    -- Hop forward inside / outside round brackets.
+    vim.keymap.set({"n", "x", "o"}, "s", function()
+      rh.hop({
+        direction = "forward",
+        offset = "start",
+        pattern = "\\v\\d+",
+      })
+    end)
+    
+    -- Hop backward inside / outside round brackets.
+    vim.keymap.set({"n", "x", "o"}, "S", function()
+      rh.hop({
+        direction = "backward",
+        offset = "start",
+        pattern = "\\v\\d+",
+      })
+    end)
+<
+
+Hop inside / outside quotes ~
+
+>lua
+    -- Hop forward past quotes.
+    vim.keymap.set({"n", "x", "o"}, "s", function()
+      rh.hop({
+        direction = "forward",
+        offset = "post",
+        pattern = "\\v[\"'`]",
+      })
+    end)
+    
+    -- Hop backward past quotes.
+    vim.keymap.set({"n", "x", "o"}, "S", function()
+      rh.hop({
+        direction = "backward",
+        offset = "post",
+        pattern = "\\v[\"'`]",
+      })
+    end)
+<
+
+Hop inside / outside round brackets ~
+
+>lua
+    -- Hop forward inside / outside round brackets.
+    vim.keymap.set({"n", "x", "o"}, "s", function()
+      rh.hop({
+        direction = "forward",
+        offset = "post",
+        pattern = "\\v[()]",
+        -- If you don't want to hop past ) which is the last character on the line,
+        -- then use this pattern: "\\v((|\\)$@!)"
+      })
+    end)
+    
+    -- Hop backward inside / outside round brackets.
+    vim.keymap.set({"n", "x", "o"}, "S", function()
+      rh.hop({
+        direction = "backward",
+        offset = "post",
+        pattern = "\\v[()]",
+      })
+    end)
+<
+
+
+==============================================================================
+4. Plugin hop options                     *rabbit-hop.nvim-plugin-hop-options*
+
+  -------------------------------------------------------------------------------
+  Option                    Default           Possible          Description
+  ------------------------- ----------------- ----------------- -----------------
+  direction                 "forward"         "forward",        Direction to hop
+                                              "backward"        
+
+  pattern                   -                 any vim pattern   Pattern to hop
+
+  offset                    "start"           "pre", "start",   Cursor position
+                                              "end", "post"     relative to the
+                                                                pattern
+
+  insert_mode_target_side   "left"            "left", "right"   Side to place the
+                                                                cursor in insert
+                                                                mode. It’s
+                                                                applied after the
+                                                                offset.
+  -------------------------------------------------------------------------------
+
+Generated by panvimdoc <https://github.com/kdheepak/panvimdoc>
+
+vim:tw=78:ts=8:noet:ft=help:norl:
