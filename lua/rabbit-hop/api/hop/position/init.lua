@@ -49,10 +49,10 @@ local new_position = function(line, column, n_is_pointable)
   ---Selects a region from the current position to a given position.
   ---@param position RH_Position
   p.select_region_to = function(position)
-    local byte_position1 = utils.from_virtual_to_byte(raw(p))
-    local byte_position2 = utils.from_virtual_to_byte(raw(position))
-    vim.api.nvim_buf_set_mark(0, "<", byte_position1[1], byte_position1[2], {})
-    vim.api.nvim_buf_set_mark(0, ">", byte_position2[1], byte_position2[2], {})
+    -- Use vim.fn.setcharpos instead vim.api.nvim_buf_set_mark, because the
+    -- later ignores subsequent <bs>'s.
+    vim.fn.setcharpos("'<", { 0, p.line, p.column + 1, 0 })
+    vim.fn.setcharpos("'>", { 0, position.line, position.column + 1, 0 })
 
     vim.cmd("normal! gv")
 
