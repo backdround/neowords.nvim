@@ -49,6 +49,7 @@ M.get = function(...)
         direction = "forward",
         offset = mode() == "operator-pending" and "pre" or "start",
         pattern = pattern,
+        insert_mode_target_side = "left",
       })
     end,
 
@@ -57,6 +58,7 @@ M.get = function(...)
         direction = "forward",
         offset = "end",
         pattern = pattern,
+        insert_mode_target_side = "right",
       })
     end,
 
@@ -65,6 +67,7 @@ M.get = function(...)
         direction = "backward",
         offset = mode() == "operator-pending" and "pre" or "end",
         pattern = pattern,
+        insert_mode_target_side = "right",
       })
     end,
 
@@ -73,6 +76,7 @@ M.get = function(...)
         direction = "backward",
         offset = "start",
         pattern = pattern,
+        insert_mode_target_side = "left",
       })
     end,
   }

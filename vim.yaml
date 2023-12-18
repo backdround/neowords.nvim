@@ -45,6 +45,10 @@ globals:
     args:
       - type: number
       - type: number
+  assert.last_selected_region:
+    args:
+      - type: table
+      - type: table
   assert.buffer:
     args:
       - type: string
