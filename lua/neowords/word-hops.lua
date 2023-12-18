@@ -2,19 +2,12 @@ local rabbit_hop = require("neowords.rabbit-hop.api")
 
 local M = {}
 
----@return "operator-pending"|"visual"|"normal"|"insert"
-local mode = function()
+local is_operator_pending_mode = function()
   local m = tostring(vim.fn.mode(true))
-
   if m:find("o") then
-    return "operator-pending"
-  elseif m:find("[vV]") then
-    return "visual"
-  elseif m:find("i") then
-    return "insert"
-  else
-    return "normal"
+    return true
   end
+  return false
 end
 
 ---Unites patterns into one pattern
@@ -47,7 +40,7 @@ M.get = function(...)
     forward_start = function()
       rabbit_hop.hop({
         direction = "forward",
-        offset = mode() == "operator-pending" and "pre" or "start",
+        offset = is_operator_pending_mode() and "pre" or "start",
         pattern = pattern,
         insert_mode_target_side = "left",
       })
@@ -65,7 +58,7 @@ M.get = function(...)
     backward_end = function()
       rabbit_hop.hop({
         direction = "backward",
-        offset = mode() == "operator-pending" and "pre" or "end",
+        offset = is_operator_pending_mode() and "pre" or "end",
         pattern = pattern,
         insert_mode_target_side = "right",
       })
