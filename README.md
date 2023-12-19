@@ -1,5 +1,15 @@
 # Neowords.nvim
 
+<p align="center">
+  <a href="https://github.com/backdround/neowords.nvim/actions">
+    <img src="https://img.shields.io/github/actions/workflow/status/backdround/neowords.nvim/tests.yaml?branch=main&label=Tests&style=flat-square" alt="Tests">
+  </a>
+  <a href="https://github.com/backdround/neowords.nvim/actions">
+    <img src="https://img.shields.io/github/actions/workflow/status/backdround/neowords.nvim/docs.yaml?branch=main&label=Doc%20generation&status=gen&style=flat-square" alt="Tests">
+  </a>
+</p>
+
+
 It's a Neovim plugin that provides flexible and reliable hops by any type
 of words. It reimplements basic `w`, `e`, `b`, `ge` movements but
 allows a user to have a fine tune over them.
