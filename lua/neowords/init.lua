@@ -12,6 +12,13 @@ local M = {
   }
 }
 
+setmetatable(M.pattern_presets, {
+  __index = function(_, key)
+    local format = "The key %s doesn't exist in the pattern_presets"
+    error(format:format(tostring(key)))
+  end
+})
+
 M.get_word_hops = word_hops.get
 
 return M

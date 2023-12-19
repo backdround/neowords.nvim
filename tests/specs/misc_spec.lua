@@ -16,6 +16,14 @@ describe("misc", function()
     assert.is_not.Nil(error:match("At least one pattern must be passed"))
   end)
 
+  it("error on missed pattern_presets access", function()
+    local state, error = pcall(function()
+      _ = nw.pattern_presets.unexisting_field
+    end)
+    assert.is.False(state)
+    assert.is_not.Nil(error:match("unexisting_field"))
+  end)
+
   it("should unite several all given patterns together", function()
     h.get_preset("| <a> <b> <a> <b>" , { 1, 0 })()
     local hops = nw.get_word_hops("\\M<a>", "\\M<b>")
