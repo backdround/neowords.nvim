@@ -21,7 +21,7 @@ jobs:
       # As soon as the bug https://github.com/actions/runner/issues/1984
       # will be fixed
       - name: Prepare README.md
-        run: sed -r "s/##(#+)/\1/g" ./README.md > /github/home/README.md
+        run: sed -r "s/#(#+)/\1/g" ./README.md > /github/home/README.md
 
       - name: panvimdoc
         uses: kdheepak/panvimdoc@main
