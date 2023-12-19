@@ -54,6 +54,7 @@ M.get = function(...)
         offset = is_operator_pending_mode() and "pre" or "start",
         pattern = pattern,
         insert_mode_target_side = "left",
+        count = vim.v.count1,
       })
     end,
 
@@ -63,6 +64,7 @@ M.get = function(...)
         offset = "end",
         pattern = pattern,
         insert_mode_target_side = "right",
+        count = vim.v.count1,
       })
     end,
 
@@ -72,6 +74,7 @@ M.get = function(...)
         offset = is_operator_pending_mode() and "pre" or "end",
         pattern = pattern,
         insert_mode_target_side = "right",
+        count = vim.v.count1,
       })
     end,
 
@@ -81,6 +84,7 @@ M.get = function(...)
         offset = "start",
         pattern = pattern,
         insert_mode_target_side = "left",
+        count = vim.v.count1,
       })
     end,
   }
