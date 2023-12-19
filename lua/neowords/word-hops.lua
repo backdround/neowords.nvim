@@ -16,11 +16,22 @@ end
 local unite_patterns = function(...)
   local patterns = {...}
 
+  if #patterns == 0 then
+    error("At least one pattern must be passed as an argument")
+  end
+
+  for _, pattern in ipairs(patterns) do
+    if type(pattern) ~= "string" then
+      error("The argument must be a string, but it's a " .. type(pattern))
+    end
+  end
+
   local result_pattern = "\\v(" .. table.remove(patterns, 1)
   for _, pattern in ipairs(patterns) do
     result_pattern = result_pattern .. "\\v|" .. pattern
   end
   result_pattern = result_pattern .. "\\v)"
+
   return result_pattern
 end
 
