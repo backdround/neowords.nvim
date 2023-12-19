@@ -14,6 +14,11 @@ Table of Contents                            *neowords.nvim-table-of-contents*
 ==============================================================================
 1. Neowords.nvim                                 *neowords.nvim-neowords.nvim*
 
+
+
+
+
+
 It’s a Neovim plugin that provides flexible and reliable hops by any type of
 words. It reimplements basic `w`, `e`, `b`, `ge` movements but allows a user to
 have a fine tune over them.
