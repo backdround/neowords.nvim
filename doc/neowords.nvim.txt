@@ -4,12 +4,12 @@
 Table of Contents                            *neowords.nvim-table-of-contents*
 
 1. Neowords.nvim                                 |neowords.nvim-neowords.nvim|
-  - Show cases                        |neowords.nvim-neowords.nvim-show-cases|
-2. Sub words only                               |neowords.nvim-sub-words-only|
-3. Big words only                               |neowords.nvim-big-words-only|
-4. Sub words with dots and commas|neowords.nvim-sub-words-with-dots-and-commas|
-5. Numbers and hex color words     |neowords.nvim-numbers-and-hex-color-words|
-  - Configure as you wish|neowords.nvim-numbers-and-hex-color-words-configure-as-you-wish|
+2. Show cases                                       |neowords.nvim-show-cases|
+  - Sub words only                   |neowords.nvim-show-cases-sub-words-only|
+  - Big words only                   |neowords.nvim-show-cases-big-words-only|
+  - Sub words with dots and commas|neowords.nvim-show-cases-sub-words-with-dots-and-commas|
+  - Numbers and hex color words|neowords.nvim-show-cases-numbers-and-hex-color-words|
+3. Configure as you wish                 |neowords.nvim-configure-as-you-wish|
 
 ==============================================================================
 1. Neowords.nvim                                 *neowords.nvim-neowords.nvim*
@@ -22,11 +22,11 @@ It: - treats `corner cases` well (`cw` and others). - works with `non-ascii`
 text; - works also in `insert` mode;
 
 
-SHOW CASES                            *neowords.nvim-neowords.nvim-show-cases*
-
-
 ==============================================================================
-2. Sub words only                               *neowords.nvim-sub-words-only*
+2. Show cases                                       *neowords.nvim-show-cases*
+
+
+SUB WORDS ONLY                       *neowords.nvim-show-cases-sub-words-only*
 
 >lua
     -- Ignore anything except sub words!
@@ -57,8 +57,7 @@ Configuration ~
 
 
 
-==============================================================================
-3. Big words only                               *neowords.nvim-big-words-only*
+BIG WORDS ONLY                       *neowords.nvim-show-cases-big-words-only*
 
 >lua
     -- Ignore anything except big words!
@@ -87,8 +86,7 @@ Configuration ~
 
 
 
-==============================================================================
-4. Sub words with dots and commas*neowords.nvim-sub-words-with-dots-and-commas*
+SUB WORDS WITH DOTS AND COMMAS*neowords.nvim-show-cases-sub-words-with-dots-and-commas*
 
 >lua
     -- Jump over subwords, dots and commas!
@@ -121,8 +119,7 @@ Configuration ~
 
 
 
-==============================================================================
-5. Numbers and hex color words     *neowords.nvim-numbers-and-hex-color-words*
+NUMBERS AND HEX COLOR WORDS*neowords.nvim-show-cases-numbers-and-hex-color-words*
 
 >lua
     -- Ignore anything except number and color words!
@@ -152,7 +149,8 @@ Configuration ~
 
 
 
-CONFIGURE AS YOU WISH*neowords.nvim-numbers-and-hex-color-words-configure-as-you-wish*
+==============================================================================
+3. Configure as you wish                 *neowords.nvim-configure-as-you-wish*
 
 >lua
     local neowords = require("neowords")
