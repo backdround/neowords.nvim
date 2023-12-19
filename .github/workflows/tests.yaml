@@ -1,0 +1,20 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    container: alpine:latest
+    steps:
+      - name: Prepare container
+        run: apk update && apk add neovim git bash
+
+      - uses: actions/checkout@v4
+
+      - name: Run tests
+        run: |
+          git config --system --add safe.directory "$(pwd)"
+          ./tests/run.sh
