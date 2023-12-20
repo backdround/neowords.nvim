@@ -19,6 +19,9 @@ It:
 - works with `non-ascii` text;
 - works also in `insert` mode;
 
+If you can't configure your case or think there is a useful
+preset that isn't presented in the show cases, make an issue!
+
 ## Show cases
 ### Sub words only
 ```lua
@@ -146,8 +149,10 @@ local neowords = require("neowords")
 local presets = neowords.pattern_presets
 
 local hops = neowords.get_word_hops(
-  -- Any vim patterns separated by comma here.
-  -- Check examples above
+  -- Vim-patterns or pattern presets separated by commas.
+  -- Check `:magic` and onwards for patterns overview.
+  "\\v[[:lower:]]+",
+  presets.number
 )
 
 vim.keymap.set({ "n", "x", "o" }, "w", hops.forward_start)
@@ -155,5 +160,3 @@ vim.keymap.set({ "n", "x", "o" }, "e", hops.forward_end)
 vim.keymap.set({ "n", "x", "o" }, "b", hops.backward_start)
 vim.keymap.set({ "n", "x", "o" }, "ge", hops.backward_end)
 ```
-
-If you can't configure your case, make an issue!
