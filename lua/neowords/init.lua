@@ -8,7 +8,7 @@ local M = {
     number = "\\v[[:digit:]]+",
     hex_color = "\\v#[[:xdigit:]]+",
 
-    any_word = "\\v-@![[:alpha:]-_]+",
+    any_word = "\\v-@![-_[:lower:][:upper:]]+",
   }
 }
 
