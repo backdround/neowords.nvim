@@ -12,9 +12,9 @@ local position = require(({...})[1]:gsub("[^.]+$", "") .. "position")
 ---@param n_is_pointable boolean position can point to a "\n"
 ---@return RH_PatternPosition|nil
 local function search_pattern(pattern, direction, count, is_suitable, n_is_pointable)
-  local flags = "cnW"
+  local flags = "cnWz"
   if direction == "backward" then
-    flags = flags .. "b"
+    flags = "cnWb"
   end
 
   local found_pattern = nil
