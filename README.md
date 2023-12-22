@@ -26,7 +26,7 @@ preset that isn't presented in the show cases, make an issue!
 ### Sub words only
 ```lua
 -- Ignore anything except sub words!
-local CamelCase = "sneak_UPPER_MIXEDCase" .. "1234"
+local CamelCase = "snake_UPPER_MIXEDCase" .. "1234"
 --    ^    ^       ^     ^     ^    ^         ^
 ```
 <details><summary>Configuration</summary>
@@ -36,7 +36,7 @@ local neowords = require("neowords")
 local p = neowords.pattern_presets
 
 local subword_hops = neowords.get_word_hops(
-  p.sneak_case,
+  p.snake_case,
   p.camel_case,
   p.upper_case,
   p.number,
@@ -56,7 +56,7 @@ vim.keymap.set({ "n", "x", "o" }, "ge", subword_hops.backward_end)
 ### Big words only
 ```lua
 -- Ignore anything except big words!
-local CamelCase = "sneak_UPPER_MIXEDCase" .. "1234" .. "dashed-case"
+local CamelCase = "snake_UPPER_MIXEDCase" .. "1234" .. "dashed-case"
 --    ^            ^                          ^         ^
 ```
 <details><summary>Configuration</summary>
@@ -94,7 +94,7 @@ local neowords = require("neowords")
 local p = neowords.pattern_presets
 
 local hops = neowords.get_word_hops(
-  p.sneak_case,
+  p.snake_case,
   p.camel_case,
   p.upper_case,
   p.number,
@@ -116,7 +116,7 @@ vim.keymap.set({ "n", "x", "o" }, "ge", hops.backward_end)
 ### Numbers and hex color words
 ```lua
 -- Ignore anything except number and color words!
-local CamelCase = "99 sneak_UPPER_MIXEDCase" .. "1234" .. "dashed-case"
+local CamelCase = "99 snake_UPPER_MIXEDCase" .. "1234" .. "dashed-case"
 --                 ^                             ^
 local my_cool_color = "#E3B8EF"
 --                     ^
