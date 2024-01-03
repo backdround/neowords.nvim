@@ -13,19 +13,17 @@ describe("v:count", function()
     h.feedkeys("3", false)
     h.perform_through_keymap(rabbit_hop.hop, true, {
       direction = "forward",
-      offset = "start",
+      match_position = "start",
       pattern = pattern,
     })
     assert.cursor_at(1, 12)
   end)
 
-  it(
-    "should be taken as a maximal possible count if v:count is too big",
-    function()
+  it("should stuck at the last match if v:count is too big", function()
       h.feedkeys("22", false)
       h.perform_through_keymap(rabbit_hop.hop, true, {
         direction = "forward",
-        offset = "start",
+        match_position = "start",
         pattern = pattern,
       })
       assert.cursor_at(1, 16)

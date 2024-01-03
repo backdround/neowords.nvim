@@ -14,6 +14,10 @@ globals:
       - type: string
       - type: function
 
+  pending:
+    args:
+      - type: string
+
   before_each:
     args:
       - type: function
@@ -26,9 +30,14 @@ globals:
       - type: any
       - type: any
 
+  assert.is:
+    any: true
   assert.is.Nil:
     args:
       - type: any
+  assert.has_error:
+    args:
+      - type: function
 
   assert.is_not:
     any: true
@@ -44,10 +53,24 @@ globals:
     args:
       - type: number
       - type: number
+  assert.buffer:
+    args:
+      - type: string
   assert.selected_region:
     args:
       - type: table
       - type: table
-  assert.buffer:
+  assert.match_position:
     args:
-      - type: string
+      - type: table
+      - type: table
+      - type: table
+  assert.iterator:
+    args:
+      - type: table
+      - type: table
+      - type: table
+  assert.position:
+    args:
+      - type: table
+      - type: table
