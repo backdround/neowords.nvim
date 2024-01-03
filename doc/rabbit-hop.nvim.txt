@@ -1,4 +1,4 @@
-*rabbit-hop.nvim.txt*             For NVIM v0.8.0            Last change: 2023
+*rabbit-hop.nvim.txt*             For NVIM v0.8.0            Last change: 2024
 
 ==============================================================================
 Table of Contents                          *rabbit-hop.nvim-table-of-contents*
@@ -43,7 +43,8 @@ The plugin:
     vim.keymap.set({"n", "x", "o"}, "s", function()
       rh.hop({
         direction = "forward",
-        offset = "post",
+        match_position = "end",
+        offset = 1,
         pattern = "\\M(",
       })
     end)
@@ -52,7 +53,8 @@ The plugin:
     vim.keymap.set({"n", "x", "o"}, "S", function()
       rh.hop({
         direction = "backward",
-        offset = "post",
+        match_position = "start",
+        offset = -1,
         pattern = "\\M)",
       })
     end)
@@ -65,20 +67,20 @@ The plugin:
 Hop to a number ~
 
 >lua
-    -- Hop forward inside / outside round brackets.
+    -- Hop forward to the start of a number.
     vim.keymap.set({"n", "x", "o"}, "s", function()
       rh.hop({
         direction = "forward",
-        offset = "start",
+        match_position = "start",
         pattern = "\\v\\d+",
       })
     end)
     
-    -- Hop backward inside / outside round brackets.
+    -- Hop backward to the start of a number.
     vim.keymap.set({"n", "x", "o"}, "S", function()
       rh.hop({
         direction = "backward",
-        offset = "start",
+        match_position = "start",
         pattern = "\\v\\d+",
       })
     end)
@@ -91,7 +93,8 @@ Hop inside / outside quotes ~
     vim.keymap.set({"n", "x", "o"}, "s", function()
       rh.hop({
         direction = "forward",
-        offset = "post",
+        match_position = "end",
+        offset = 1,
         pattern = "\\v[\"'`]",
       })
     end)
@@ -100,7 +103,8 @@ Hop inside / outside quotes ~
     vim.keymap.set({"n", "x", "o"}, "S", function()
       rh.hop({
         direction = "backward",
-        offset = "post",
+        match_position = "start",
+        offset = -1,
         pattern = "\\v[\"'`]",
       })
     end)
@@ -113,7 +117,8 @@ Hop inside / outside round brackets ~
     vim.keymap.set({"n", "x", "o"}, "s", function()
       rh.hop({
         direction = "forward",
-        offset = "post",
+        match_position = "end",
+        offset = 1,
         pattern = "\\v[()]",
         -- If you don't want to hop past ) which is the last character on the line,
         -- then use this pattern: "\\v((|\\)$@!)"
@@ -124,7 +129,8 @@ Hop inside / outside round brackets ~
     vim.keymap.set({"n", "x", "o"}, "S", function()
       rh.hop({
         direction = "backward",
-        offset = "post",
+        match_position = "start",
+        offset = -1,
         pattern = "\\v[()]",
       })
     end)
@@ -134,24 +140,27 @@ Hop inside / outside round brackets ~
 ==============================================================================
 4. Plugin hop options                     *rabbit-hop.nvim-plugin-hop-options*
 
-  -------------------------------------------------------------------------------
-  Option                    Default           Possible          Description
-  ------------------------- ----------------- ----------------- -----------------
-  direction                 "forward"         "forward",        Direction to hop
-                                              "backward"        
+  --------------------------------------------------------------------------------
+  Option                     Default           Possible          Description
+  -------------------------- ----------------- ----------------- -----------------
+  pattern                    -                 any vim pattern   Pattern to hop.
 
-  pattern                   -                 any vim pattern   Pattern to hop
+  direction?                 "forward"         "forward",        Direction to hop.
+                                               "backward"        
 
-  offset                    "start"           "pre", "start",   Cursor position
-                                              "end", "post"     relative to the
-                                                                pattern
+  match_position?            "start"           "start", "end"    Sets which end of
+                                                                 the match to use.
 
-  insert_mode_target_side   "left"            "left", "right"   Side to place the
-                                                                cursor in insert
-                                                                mode. It’s
-                                                                applied after the
-                                                                offset.
-  -------------------------------------------------------------------------------
+  offset?                    0                 any number        Advances final
+                                                                 position
+                                                                 relatively
+                                                                 match_position.
+
+  insert_mode_target_side?   "left"            "left", "right"   Side to place the
+                                                                 cursor in insert
+                                                                 mode. It’s
+                                                                 applied after.
+  --------------------------------------------------------------------------------
 
 Generated by panvimdoc <https://github.com/kdheepak/panvimdoc>
 

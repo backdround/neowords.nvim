@@ -1,18 +1,21 @@
-local rh = require("rabbit-hop.api")
+local rabbit_hop_api = require("rabbit-hop.api")
+local h = require("tests.helpers")
+
 local M = {}
 
----Performs the rh.hop through a keymap
----@param direction "forward"|"backward"|nil
----@param offset "pre"|"start"|"end"|"post"|nil
+---Performs the rabbit-hop.api.hop through a keymap
 ---@param pattern string
----@param additional_options table|nil
-M.hop = function(direction, offset, pattern, additional_options)
-  local hop_options = additional_options or {}
+---@param direction? "forward"|"backward"
+---@param match_position? "start"|"end"
+---@param additional_options? table|nil
+M.hop = function(pattern, direction, match_position, additional_options)
+  local hop_options = vim.deepcopy(additional_options or {})
+
   hop_options.direction = direction
-  hop_options.offset = offset
+  hop_options.match_position = match_position
   hop_options.pattern = pattern
 
-  require("tests.helpers").perform_through_keymap(rh.hop, true, hop_options)
+  h.perform_through_keymap(rabbit_hop_api.hop, true, hop_options)
 end
 
 return M

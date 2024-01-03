@@ -36,9 +36,11 @@ end
 
 ---Returns a function that resets neovim state
 ---@param buffer_text string to set current buffer
----@param cursor_position number[]
+---@param cursor_position? number[] position to place the cursor
 ---@return function
 M.get_preset = function(buffer_text, cursor_position)
+  cursor_position = cursor_position or { 1, 0 }
+
   return function()
     -- Reset mode
     M.reset_mode()
@@ -103,7 +105,16 @@ end
 ---@param line number 1-bazed
 ---@param column number 0-bazed virtual column
 M.set_cursor = function(line, column)
-  column = vim.fn.virtcol2col(0, line, column + 1) - 1
+  local line_length = vim.fn.virtcol({ line, "$" }) - 1
+  if column == line_length then
+    -- vim.fn.virtcol2col converts position to a '\n' the same way
+    -- as if it converts position to a last character.
+    -- so, do it manually.
+    column = vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:len()
+  else
+    column = vim.fn.virtcol2col(0, line, column + 1) - 1
+  end
+
   vim.api.nvim_win_set_cursor(0, { line, column })
 end
 

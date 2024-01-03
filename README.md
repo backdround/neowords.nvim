@@ -51,7 +51,8 @@ local rh = require("rabbit-hop")
 vim.keymap.set({"n", "x", "o"}, "s", function()
   rh.hop({
     direction = "forward",
-    offset = "post",
+    match_position = "end",
+    offset = 1,
     pattern = "\\M(",
   })
 end)
@@ -60,7 +61,8 @@ end)
 vim.keymap.set({"n", "x", "o"}, "S", function()
   rh.hop({
     direction = "backward",
-    offset = "post",
+    match_position = "start",
+    offset = -1,
     pattern = "\\M)",
   })
 end)
@@ -70,20 +72,20 @@ end)
 <details><summary>Hop to a number</summary>
 
 ```lua
--- Hop forward inside / outside round brackets.
+-- Hop forward to the start of a number.
 vim.keymap.set({"n", "x", "o"}, "s", function()
   rh.hop({
     direction = "forward",
-    offset = "start",
+    match_position = "start",
     pattern = "\\v\\d+",
   })
 end)
 
--- Hop backward inside / outside round brackets.
+-- Hop backward to the start of a number.
 vim.keymap.set({"n", "x", "o"}, "S", function()
   rh.hop({
     direction = "backward",
-    offset = "start",
+    match_position = "start",
     pattern = "\\v\\d+",
   })
 end)
@@ -98,7 +100,8 @@ end)
 vim.keymap.set({"n", "x", "o"}, "s", function()
   rh.hop({
     direction = "forward",
-    offset = "post",
+    match_position = "end",
+    offset = 1,
     pattern = "\\v[\"'`]",
   })
 end)
@@ -107,7 +110,8 @@ end)
 vim.keymap.set({"n", "x", "o"}, "S", function()
   rh.hop({
     direction = "backward",
-    offset = "post",
+    match_position = "start",
+    offset = -1,
     pattern = "\\v[\"'`]",
   })
 end)
@@ -122,7 +126,8 @@ end)
 vim.keymap.set({"n", "x", "o"}, "s", function()
   rh.hop({
     direction = "forward",
-    offset = "post",
+    match_position = "end",
+    offset = 1,
     pattern = "\\v[()]",
     -- If you don't want to hop past ) which is the last character on the line,
     -- then use this pattern: "\\v((|\\)$@!)"
@@ -133,7 +138,8 @@ end)
 vim.keymap.set({"n", "x", "o"}, "S", function()
   rh.hop({
     direction = "backward",
-    offset = "post",
+    match_position = "start",
+    offset = -1,
     pattern = "\\v[()]",
   })
 end)
@@ -150,7 +156,8 @@ end)
 
 | Option | Default | Possible | Description |
 | --- | --- | --- | --- |
-| `direction` | `"forward"` | `"forward"`, `"backward"` | Direction to hop |
-| `pattern` | - | any vim pattern | Pattern to hop |
-| `offset` | `"start"` | `"pre"`, `"start"`, `"end"`, `"post"` | Cursor position relative to the pattern |
-| `insert_mode_target_side` | `"left"` | `"left"`, `"right"` | Side to place the cursor in insert mode. It's applied after the offset.
+| `pattern` | - | any vim pattern | Pattern to hop. |
+| `direction?` | `"forward"` | `"forward"`, `"backward"` | Direction to hop. |
+| `match_position?` | `"start"` | `"start"`, `"end"` | Sets which end of the match to use. |
+| `offset?` | 0 | any number | Advances final position relatively `match_position`. |
+| `insert_mode_target_side?` | `"left"` | `"left"`, `"right"` | Side to place the cursor in insert mode. It's applied after.
