@@ -51,7 +51,8 @@ M.get = function(...)
     forward_start = function()
       rabbit_hop.hop({
         direction = "forward",
-        offset = is_operator_pending_mode() and "pre" or "start",
+        match_position = "start",
+        offset = is_operator_pending_mode() and -1 or 0,
         pattern = pattern,
         insert_mode_target_side = "left",
         count = vim.v.count1,
@@ -61,7 +62,7 @@ M.get = function(...)
     forward_end = function()
       rabbit_hop.hop({
         direction = "forward",
-        offset = "end",
+        match_position = "end",
         pattern = pattern,
         insert_mode_target_side = "right",
         count = vim.v.count1,
@@ -71,7 +72,8 @@ M.get = function(...)
     backward_end = function()
       rabbit_hop.hop({
         direction = "backward",
-        offset = is_operator_pending_mode() and "pre" or "end",
+        match_position = "end",
+        offset = is_operator_pending_mode() and 1 or 0,
         pattern = pattern,
         insert_mode_target_side = "right",
         count = vim.v.count1,
@@ -81,7 +83,7 @@ M.get = function(...)
     backward_start = function()
       rabbit_hop.hop({
         direction = "backward",
-        offset = "start",
+        match_position = "start",
         pattern = pattern,
         insert_mode_target_side = "left",
         count = vim.v.count1,
