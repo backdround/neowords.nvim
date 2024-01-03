@@ -3,18 +3,15 @@ local h = require("tests.helpers")
 
 require("tests.custom-asserts").register()
 
----Performs the rabbit_hop.hop through a keymap
----@param direction "forward"|"backward"|nil
----@param offset "pre"|"start"|"end"|"post"|nil
+---Performs a forward hop to a position before a match through a keymap.
 ---@param pattern string
----@param additional_options table|nil
-local hop = function(direction, offset, pattern, additional_options)
-  local hop_options = additional_options or {}
-  hop_options.direction = direction
-  hop_options.offset = offset
-  hop_options.pattern = pattern
-
-  h.perform_through_keymap(rabbit_hop.hop, true, hop_options)
+local hop_before_match = function(pattern)
+  h.perform_through_keymap(rabbit_hop.hop, true, {
+    direction = "forward",
+    match_position = "start",
+    offset = -1,
+    pattern = pattern,
+  })
 end
 
 describe("dot `.` repeat", function()
@@ -23,7 +20,7 @@ describe("dot `.` repeat", function()
 
   it("should work", function()
     vim.api.nvim_feedkeys("d", "n", false)
-    hop("forward", "pre", pattern)
+    hop_before_match(pattern)
     assert.buffer("<a> <a> <a> <a> <a>")
 
     vim.api.nvim_feedkeys(".", "nx", false)
@@ -32,7 +29,7 @@ describe("dot `.` repeat", function()
 
   it("should respect old v:count", function()
     vim.api.nvim_feedkeys("2d", "n", false)
-    hop("forward", "pre", pattern)
+    hop_before_match(pattern)
     assert.buffer("<a> <a> <a> <a>")
 
     vim.api.nvim_feedkeys(".", "nx", false)
@@ -41,7 +38,7 @@ describe("dot `.` repeat", function()
 
   it("should choose new v:count over old v:count", function()
     vim.api.nvim_feedkeys("2d", "n", false)
-    hop("forward", "pre", pattern)
+    hop_before_match(pattern)
     assert.buffer("<a> <a> <a> <a>")
 
     vim.api.nvim_feedkeys("3.", "nx", false)
@@ -50,12 +47,12 @@ describe("dot `.` repeat", function()
 
   it("should use last operator-pending v:count hop", function()
     vim.api.nvim_feedkeys("2d", "n", false)
-    hop("forward", "pre", pattern)
+    hop_before_match(pattern)
     assert.buffer("<a> <a> <a> <a>")
     h.set_cursor(1, 0)
 
     vim.api.nvim_feedkeys("3", "n", false)
-    hop("forward", "pre", pattern)
+    hop_before_match(pattern)
     h.set_cursor(1, 0)
 
     vim.api.nvim_feedkeys(".", "nx", false)

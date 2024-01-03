@@ -8,8 +8,11 @@
         "assert.is",
         "assert.are",
         "assert.cursor_at",
+        "assert.buffer",
         "assert.selected_region",
-        "assert.buffer"
+        "assert.match_position",
+        "assert.iterator",
+        "assert.position"
       ]
     },
     "runtime": {

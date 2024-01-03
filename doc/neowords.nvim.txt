@@ -1,4 +1,4 @@
-*neowords.nvim.txt*              For NVIM v0.8.0             Last change: 2023
+*neowords.nvim.txt*              For NVIM v0.8.0             Last change: 2024
 
 ==============================================================================
 Table of Contents                            *neowords.nvim-table-of-contents*
