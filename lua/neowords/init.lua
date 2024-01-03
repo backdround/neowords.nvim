@@ -22,7 +22,7 @@ setmetatable(M.pattern_presets, {
       message = message .. "\n   - " .. possible_key
     end
 
-    error(message)
+    error(message, 2)
   end,
 })
 
