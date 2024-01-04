@@ -4,11 +4,28 @@ local h = require("tests.helpers")
 require("tests.custom-asserts").register()
 
 describe("corner-cases", function()
+  local hops = nw.get_word_hops("\\v[[:lower:]]+")
+
   it("hop forward_end from the middle of a word", function()
     h.get_preset("several_snake_words", { 1, 3 })()
-    local hops = nw.get_word_hops("\\v[[:lower:]]+")
 
     h.perform_through_keymap(hops.forward_end, true)
+    assert.cursor_at(1, 7)
+  end)
+
+  it("multi-byte text", function()
+    h.get_preset("некоторый текст", { 1, 1 })()
+
+    hops.forward_end()
+    assert.cursor_at(1, 9)
+  end)
+
+  it("multi-column text", function()
+    local double_tab = "		"
+    local buffer = "text" .. double_tab .. "here"
+    h.get_preset(buffer, { 1, 1 })()
+
+    hops.forward_start()
     assert.cursor_at(1, 7)
   end)
 
