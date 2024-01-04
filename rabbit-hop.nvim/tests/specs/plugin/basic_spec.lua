@@ -4,7 +4,7 @@ local h = require("tests.helpers")
 require("tests.custom-asserts").register()
 
 describe("basic", function()
-  before_each(h.get_preset("aa aa aa aa aa", { 1, 6 }))
+  before_each(h.get_preset("aa aa aa aa aa", { 1, 7 }))
   local pattern = "\\Maa"
 
   it("no match", function()
@@ -17,7 +17,7 @@ describe("basic", function()
       })
     end, true)
     assert.is.False(performed)
-    assert.cursor_at(1, 6)
+    assert.cursor_at(1, 7)
   end)
 
   it("there is a match", function()
@@ -30,7 +30,7 @@ describe("basic", function()
       })
     end, true)
     assert.is.True(performed)
-    assert.cursor_at(1, 9)
+    assert.cursor_at(1, 10)
   end)
 
   it("normal hop with options", function()
@@ -40,7 +40,7 @@ describe("basic", function()
       match_position = "end",
       offset = -1,
     })
-    assert.cursor_at(1, 3)
+    assert.cursor_at(1, 4)
   end)
 
   it("insert hop with options", function()
@@ -53,6 +53,6 @@ describe("basic", function()
       insert_mode_target_side = "right",
     })
     h.reset_mode()
-    assert.cursor_at(1, 3)
+    assert.cursor_at(1, 4)
   end)
 end)

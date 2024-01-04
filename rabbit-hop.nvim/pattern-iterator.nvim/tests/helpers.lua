@@ -17,6 +17,10 @@ M.get_user_lines = function(text)
     table.remove(lines, #lines)
   end
 
+  if #lines == 0 then
+    return { "" }
+  end
+
   -- Find minimal prepending space gap
   local min_prepending_gap = lines[1]:match("^[%s]*"):len()
   for _, line in pairs(lines) do
@@ -39,7 +43,7 @@ end
 ---@param cursor_position? number[] position to place the cursor
 ---@return function
 M.get_preset = function(buffer_text, cursor_position)
-  cursor_position = cursor_position or { 1, 0 }
+  cursor_position = cursor_position or { 1, 1 }
 
   return function()
     -- Reset mode
@@ -102,20 +106,10 @@ M.feedkeys = function(keys, wait_for_finish)
   vim.api.nvim_feedkeys(keys, flags, false)
 end
 
----@param line number 1-bazed
----@param column number 0-bazed virtual column
-M.set_cursor = function(line, column)
-  local line_length = vim.fn.virtcol({ line, "$" }) - 1
-  if column == line_length then
-    -- vim.fn.virtcol2col converts position to a '\n' the same way
-    -- as if it converts position to a last character.
-    -- so, do it manually.
-    column = vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:len()
-  else
-    column = vim.fn.virtcol2col(0, line, column + 1) - 1
-  end
-
-  vim.api.nvim_win_set_cursor(0, { line, column })
+---@param line number 1-based
+---@param char_index number 1-based character index
+M.set_cursor = function(line, char_index)
+  vim.fn.setcursorcharpos(line, char_index)
 end
 
 ---Performs a given function with given arguments through a keymap

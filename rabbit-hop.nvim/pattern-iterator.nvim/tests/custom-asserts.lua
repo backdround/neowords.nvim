@@ -15,10 +15,11 @@ local function concatenate_lines(lines)
   return text
 end
 
-local function from_bytes_to_position(position)
+local function get_char_position(expression)
+  local position = vim.fn.getcharpos(expression)
   return {
-    position[1],
-    vim.fn.virtcol(position)
+    position[2],
+    position[3],
   }
 end
 
@@ -27,17 +28,16 @@ end
 
 local function cursor_at(_, arguments)
   local line = arguments[1]
-  local column = arguments[2]
+  local char_index = arguments[2]
 
-  local byte_position = vim.api.nvim_win_get_cursor(0)
-  local position = from_bytes_to_position(byte_position)
+  local position = get_char_position(".")
 
   -- Prepare arguments for assert output
   table.insert(arguments, 1, position[1])
   table.insert(arguments, 2, position[2])
   arguments.nofmt = { 1, 2, 3, 4 }
 
-  return line == position[1] and column == position[2]
+  return line == position[1] and char_index == position[2]
 end
 
 local function buffer(_, arguments)
@@ -68,13 +68,8 @@ local function selected_region(_, arguments)
     vim.api.nvim_feedkeys(esc, "nx", false)
   end
 
-  local get_mark_position = function(name)
-    local byte_position = vim.api.nvim_buf_get_mark(0, name)
-    return from_bytes_to_position(byte_position)
-  end
-
-  local real_left_mark = get_mark_position("<")
-  local real_right_mark = get_mark_position(">")
+  local real_left_mark = get_char_position("'<")
+  local real_right_mark = get_char_position("'>")
 
   if restore_visual_mode then
     vim.api.nvim_feedkeys("gv", "nx", false)
@@ -120,9 +115,9 @@ local function match_position(_, arguments)
   end
 
   return real_match_position.start_position.line == expected_start_position[1]
-    and real_match_position.start_position.column == expected_start_position[2]
+    and real_match_position.start_position.char_index == expected_start_position[2]
     and real_match_position.end_position.line == expected_end_position[1]
-    and real_match_position.end_position.column == expected_end_position[2]
+    and real_match_position.end_position.char_index == expected_end_position[2]
 end
 
 local function iterator(_, arguments)
@@ -156,9 +151,9 @@ local function iterator(_, arguments)
   local end_position = real_iterator:end_position()
 
   return start_position.line == expected_start_position[1]
-    and start_position.column == expected_start_position[2]
+    and start_position.char_index == expected_start_position[2]
     and end_position.line == expected_end_position[1]
-    and end_position.column == expected_end_position[2]
+    and end_position.char_index == expected_end_position[2]
 end
 
 local function position(_, arguments)
@@ -170,7 +165,7 @@ local function position(_, arguments)
   else
     arguments[1] = ("{ %s, %s, %s }"):format(
       tostring(real_position.line),
-      tostring(real_position.column),
+      tostring(real_position.char_index),
       tostring(real_position.n_is_pointable)
     )
   end
@@ -189,7 +184,7 @@ local function position(_, arguments)
   end
 
   return real_position.line == expected_position[1]
-    and real_position.column == expected_position[2]
+    and real_position.char_index == expected_position[2]
     and real_position.n_is_pointable == expected_position[3]
 end
 

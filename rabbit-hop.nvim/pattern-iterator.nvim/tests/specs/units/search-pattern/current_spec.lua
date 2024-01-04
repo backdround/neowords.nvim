@@ -14,7 +14,7 @@ describe("search-pattern.current", function()
   it("there is no match", function()
     h.get_preset("<b> <b> <b>")()
 
-    local from_position = position.from_coordinates(1, 0)
+    local from_position = position.from_coordinates(1, 1)
     local match_position = search_pattern.current("\\M<a>", from_position)
 
     assert.is.Nil(match_position)
@@ -25,42 +25,42 @@ describe("search-pattern.current", function()
     local pattern = "\\M<a>"
 
     it("from a position that is before a match", function()
-      local from_position = position.from_coordinates(1, 3)
+      local from_position = position.from_coordinates(1, 4)
       local match_position = search_pattern.current(pattern, from_position)
 
       assert.is.Nil(match_position)
     end)
 
     it("the cursor shouldn't change the position", function()
-      local from_position = position.from_coordinates(1, 4)
+      local from_position = position.from_coordinates(1, 5)
       search_pattern.current(pattern, from_position)
 
-      assert.cursor_at(1, 0)
+      assert.cursor_at(1, 1)
     end)
 
     it("from a position that is at the start of a match", function()
-      local from_position = position.from_coordinates(1, 4)
-      local match_position = search_pattern.current(pattern, from_position)
-
-      assert.match_position(match_position, { 1, 4 }, { 1, 6 })
-    end)
-
-    it("from a position that is in the middle of a match", function()
       local from_position = position.from_coordinates(1, 5)
       local match_position = search_pattern.current(pattern, from_position)
 
-      assert.match_position(match_position, { 1, 4 }, { 1, 6 })
+      assert.match_position(match_position, { 1, 5 }, { 1, 7 })
     end)
 
-    it("from a position that is at the end of a match", function()
+    it("from a position that is in the middle of a match", function()
       local from_position = position.from_coordinates(1, 6)
       local match_position = search_pattern.current(pattern, from_position)
 
-      assert.match_position(match_position, { 1, 4 }, { 1, 6 })
+      assert.match_position(match_position, { 1, 5 }, { 1, 7 })
+    end)
+
+    it("from a position that is at the end of a match", function()
+      local from_position = position.from_coordinates(1, 7)
+      local match_position = search_pattern.current(pattern, from_position)
+
+      assert.match_position(match_position, { 1, 5 }, { 1, 7 })
     end)
 
     it("from a position that is after a match", function()
-      local from_position = position.from_coordinates(1, 7)
+      local from_position = position.from_coordinates(1, 8)
       local match_position = search_pattern.current(pattern, from_position)
 
       assert.is.Nil(match_position)
@@ -76,24 +76,24 @@ describe("search-pattern.current", function()
     local pattern = "\\v$"
 
     it("from a position that is before the match", function()
-      local from_position = position.from_coordinates(2, 4, false)
+      local from_position = position.from_coordinates(2, 5, false)
       local match_position = search_pattern.current(pattern, from_position)
 
       assert.is.Nil(match_position)
     end)
 
     it("from a position that is after the match", function()
-      local from_position = position.from_coordinates(3, 0, false)
+      local from_position = position.from_coordinates(3, 1, false)
       local match_position = search_pattern.current(pattern, from_position)
 
       assert.is.Nil(match_position)
     end)
 
     it("from a position that is on the match", function()
-      local from_position = position.from_coordinates(2, 5, true)
+      local from_position = position.from_coordinates(2, 6, true)
       local match_position = search_pattern.current(pattern, from_position)
 
-      assert.match_position(match_position, { 2, 5 }, { 2, 5 })
+      assert.match_position(match_position, { 2, 6 }, { 2, 6 })
     end)
   end)
 
@@ -106,24 +106,24 @@ describe("search-pattern.current", function()
     local pattern = "\\v^"
 
     it("from a position that is before the match", function()
-      local from_position = position.from_coordinates(1, 4, true)
+      local from_position = position.from_coordinates(1, 5, true)
       local match_position = search_pattern.current(pattern, from_position)
 
       assert.is.Nil(match_position)
     end)
 
     it("from a position that is after the match", function()
-      local from_position = position.from_coordinates(2, 1, true)
+      local from_position = position.from_coordinates(2, 2, true)
       local match_position = search_pattern.current(pattern, from_position)
 
       assert.is.Nil(match_position)
     end)
 
     it("from a position that is on the match", function()
-      local from_position = position.from_coordinates(2, 0, true)
+      local from_position = position.from_coordinates(2, 1, true)
       local match_position = search_pattern.current(pattern, from_position)
 
-      assert.match_position(match_position, { 2, 0 }, { 2, 0 })
+      assert.match_position(match_position, { 2, 1 }, { 2, 1 })
     end)
   end)
 
@@ -136,21 +136,21 @@ describe("search-pattern.current", function()
     local pattern = "\\v^a"
 
     it("from a position that is before the match", function()
-      local from_position = position.from_coordinates(1, 4, true)
+      local from_position = position.from_coordinates(1, 5, true)
       local match_position = search_pattern.current(pattern, from_position)
 
       assert.is.Nil(match_position)
     end)
 
     it("from a position that is on the match", function()
-      local from_position = position.from_coordinates(2, 0, true)
+      local from_position = position.from_coordinates(2, 1, true)
       local match_position = search_pattern.current(pattern, from_position)
 
-      assert.match_position(match_position, { 2, 0 }, { 2, 0 })
+      assert.match_position(match_position, { 2, 1 }, { 2, 1 })
     end)
 
     it("from a position that is after the match", function()
-      local from_position = position.from_coordinates(2, 1, true)
+      local from_position = position.from_coordinates(2, 2, true)
       local match_position = search_pattern.current(pattern, from_position)
 
       assert.is.Nil(match_position)
@@ -166,35 +166,35 @@ describe("search-pattern.current", function()
     local pattern = "\\va\\na"
 
     it("from a position that is before the match", function()
-      local from_position = position.from_coordinates(2, 3, true)
+      local from_position = position.from_coordinates(2, 4, true)
       local match_position = search_pattern.current(pattern, from_position)
 
       assert.is.Nil(match_position)
     end)
 
     it("from a position that is at the start of the match", function()
-      local from_position = position.from_coordinates(2, 4, true)
-      local match_position = search_pattern.current(pattern, from_position)
-
-      assert.match_position(match_position, { 2, 4 }, { 3, 0 })
-    end)
-
-    it("from a position that is in the middle of the match", function()
       local from_position = position.from_coordinates(2, 5, true)
       local match_position = search_pattern.current(pattern, from_position)
 
-      assert.match_position(match_position, { 2, 4 }, { 3, 0 })
+      assert.match_position(match_position, { 2, 5 }, { 3, 1 })
+    end)
+
+    it("from a position that is in the middle of the match", function()
+      local from_position = position.from_coordinates(2, 6, true)
+      local match_position = search_pattern.current(pattern, from_position)
+
+      assert.match_position(match_position, { 2, 5 }, { 3, 1 })
     end)
 
     it("from a position that is at the end of the match", function()
-      local from_position = position.from_coordinates(3, 0, true)
+      local from_position = position.from_coordinates(3, 1, true)
       local match_position = search_pattern.current(pattern, from_position)
 
-      assert.match_position(match_position, { 2, 4 }, { 3, 0 })
+      assert.match_position(match_position, { 2, 5 }, { 3, 1 })
     end)
 
     it("from a position that is after the match", function()
-      local from_position = position.from_coordinates(3, 1, true)
+      local from_position = position.from_coordinates(3, 2, true)
       local match_position = search_pattern.current(pattern, from_position)
 
       assert.is.Nil(match_position)
