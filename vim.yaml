@@ -45,7 +45,7 @@ globals:
     args:
       - type: number
       - type: number
-  assert.last_selected_region:
+  assert.selected_region:
     args:
       - type: table
       - type: table

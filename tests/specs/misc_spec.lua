@@ -25,13 +25,13 @@ describe("misc", function()
   end)
 
   it("should unite several all given patterns together", function()
-    h.get_preset("| <a> <b> <a> <b>" , { 1, 0 })()
+    h.get_preset("| <a> <b> <a> <b>" , { 1, 1 })()
     local hops = nw.get_word_hops("\\M<a>", "\\M<b>")
 
     h.perform_through_keymap(hops.forward_start, true)
-    assert.cursor_at( 1, 2 )
+    assert.cursor_at( 1, 3 )
 
     h.perform_through_keymap(hops.forward_start, true)
-    assert.cursor_at( 1, 6 )
+    assert.cursor_at( 1, 7 )
   end)
 end)

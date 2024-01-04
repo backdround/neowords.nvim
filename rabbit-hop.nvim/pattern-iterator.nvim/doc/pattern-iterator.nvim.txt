@@ -114,7 +114,8 @@ API                          *pattern-iterator.nvim-pattern-iterator.nvim-api*
   --------------------------------------------------------------------------------
 >lua
     local options = {
-      -- Base position to search from.
+      -- base position to search from.
+      -- It's 1-based line and 1-based character index.
       -- If nil then it uses the cursor position.
       from_search_position = { 2, 6 },
       -- Used to indicate if the end of the line `\n` is pointable.
@@ -185,10 +186,11 @@ API                          *pattern-iterator.nvim-pattern-iterator.nvim-api*
                                                                position can point to
                                                                the \n.
 
-  line                                 number                  Position’s line.
+  line                                 number                  1-based position’s
+                                                               line.
 
-  column                               number                  Position’s virtual
-                                                               column.
+  char_index                           number                  1-based position’s char
+                                                               index.
 
   n_is_pointable                       boolean                 The flag that indicates
                                                                that the position can

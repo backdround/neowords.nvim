@@ -15,10 +15,11 @@ local function concatenate_lines(lines)
   return text
 end
 
-local function from_bytes_to_position(position)
+local function get_char_position(expression)
+  local position = vim.fn.getcharpos(expression)
   return {
-    position[1],
-    vim.fn.virtcol(position)
+    position[2],
+    position[3],
   }
 end
 
@@ -27,17 +28,16 @@ end
 
 local function cursor_at(_, arguments)
   local line = arguments[1]
-  local column = arguments[2]
+  local char_index = arguments[2]
 
-  local byte_position = vim.api.nvim_win_get_cursor(0)
-  local position = from_bytes_to_position(byte_position)
+  local position = get_char_position(".")
 
   -- Prepare arguments for assert output
   table.insert(arguments, 1, position[1])
   table.insert(arguments, 2, position[2])
   arguments.nofmt = { 1, 2, 3, 4 }
 
-  return line == position[1] and column == position[2]
+  return line == position[1] and char_index == position[2]
 end
 
 local function buffer(_, arguments)
@@ -56,17 +56,24 @@ local function buffer(_, arguments)
   return user_text == buffer_text
 end
 
-local function last_selected_region(_, arguments)
+local function selected_region(_, arguments)
   local expected_left_mark = arguments[1]
   local expected_right_mark = arguments[2]
 
-  local get_mark_position = function(name)
-    local byte_position = vim.api.nvim_buf_get_mark(0, name)
-    return from_bytes_to_position(byte_position)
+  -- Reset visual mode if it's in visual
+  local restore_visual_mode = false
+  if tostring(vim.fn.mode(true)):find("[vV]") ~= nil then
+    restore_visual_mode = true
+    local esc = vim.api.nvim_replace_termcodes("<esc>", true, false, true)
+    vim.api.nvim_feedkeys(esc, "nx", false)
   end
 
-  local real_left_mark = get_mark_position("<")
-  local real_right_mark = get_mark_position(">")
+  local real_left_mark = get_char_position("'<")
+  local real_right_mark = get_char_position("'>")
+
+  if restore_visual_mode then
+    vim.api.nvim_feedkeys("gv", "nx", false)
+  end
 
   table.insert(arguments, 1, vim.inspect(real_left_mark))
   table.insert(arguments, 2, vim.inspect(real_right_mark))
@@ -107,15 +114,15 @@ local register = function()
   )
 
   say:set(
-    "assertion.last_selected_region",
+    "assertion.selected_region",
     "Expected selected region to be:" ..
     "\nReal:\n %s, %s \nExpected:\n %s, %s"
   )
   assert:register(
     "assertion",
-    "last_selected_region",
-    last_selected_region,
-    "assertion.last_selected_region"
+    "selected_region",
+    selected_region,
+    "assertion.selected_region"
   )
 end
 

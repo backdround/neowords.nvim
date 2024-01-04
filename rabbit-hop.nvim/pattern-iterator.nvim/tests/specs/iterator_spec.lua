@@ -12,24 +12,24 @@ describe("pattern-iterator", function()
 
   it("positions", function()
     local iterator = pattern_iterator.new_around("\\M<a>", {
-      from_search_position = { 2, 6 }
+      from_search_position = { 2, 7 }
     })
-    assert.position(iterator:start_position(), { 2, 5, false })
-    assert.position(iterator:end_position(), { 2, 7, false })
+    assert.position(iterator:start_position(), { 2, 6, false })
+    assert.position(iterator:end_position(), { 2, 8, false })
   end)
 
   describe("creation", function()
     describe("new_around", function()
       it("from a match", function()
         local iterator = pattern_iterator.new_around("\\M<a>", {
-          from_search_position = { 2, 6 }
+          from_search_position = { 2, 7 }
         })
-        assert.iterator(iterator, { 2, 5 }, { 2, 7 })
+        assert.iterator(iterator, { 2, 6 }, { 2, 8 })
       end)
 
       it("outside of a match", function()
         local iterator = pattern_iterator.new_around("\\M<a>", {
-          from_search_position = { 2, 4 }
+          from_search_position = { 2, 5 }
         })
         assert.is.Nil(iterator)
       end)
@@ -38,21 +38,21 @@ describe("pattern-iterator", function()
     describe("new_forward", function()
       it("from a match", function()
         local iterator = pattern_iterator.new_forward("\\M<a>", {
-          from_search_position = { 2, 6 }
+          from_search_position = { 2, 7 }
         })
-        assert.iterator(iterator, { 3, 0 }, { 3, 2 })
+        assert.iterator(iterator, { 3, 1 }, { 3, 3 })
       end)
 
       it("outside of a match", function()
         local iterator = pattern_iterator.new_forward("\\M<a>", {
-          from_search_position = { 2, 8 }
+          from_search_position = { 2, 9 }
         })
-        assert.iterator(iterator, { 3, 0 }, { 3, 2 })
+        assert.iterator(iterator, { 3, 1 }, { 3, 3 })
       end)
 
       it("there is no match after", function()
         local iterator = pattern_iterator.new_forward("\\M<a>", {
-          from_search_position = { 3, 3 }
+          from_search_position = { 3, 4 }
         })
         assert.is.Nil(iterator)
       end)
@@ -61,165 +61,165 @@ describe("pattern-iterator", function()
     describe("new_backward", function()
       it("from a match", function()
         local iterator = pattern_iterator.new_backward("\\M<a>", {
-          from_search_position = { 2, 6 }
+          from_search_position = { 2, 7 }
         })
-        assert.iterator(iterator, { 1, 10 }, { 1, 12 })
+        assert.iterator(iterator, { 1, 11 }, { 1, 13 })
       end)
 
       it("outside of a match", function()
         local iterator = pattern_iterator.new_backward("\\M<a>", {
-          from_search_position = { 2, 4 }
+          from_search_position = { 2, 5 }
         })
-        assert.iterator(iterator, { 1, 10 }, { 1, 12 })
+        assert.iterator(iterator, { 1, 11 }, { 1, 13 })
       end)
 
       it("there is no match before", function()
         local iterator = pattern_iterator.new_backward("\\M<a>", {
-          from_search_position = { 1, 9 }
+          from_search_position = { 1, 10 }
         })
         assert.is.Nil(iterator)
       end)
     end)
 
     it("without initial search position", function()
-      h.set_cursor(2, 6)
+      h.set_cursor(2, 7)
       local iterator = pattern_iterator.new_around("\\M<a>")
-      assert.iterator(iterator, { 2, 5 }, { 2, 7 })
+      assert.iterator(iterator, { 2, 6 }, { 2, 8 })
     end)
   end)
 
   describe("next()", function()
     it("simple next", function()
       local iterator = pattern_iterator.new_around("\\M<a>", {
-        from_search_position = { 2, 6 }
+        from_search_position = { 2, 7 }
       })
       assert.is.True(iterator:next())
-      assert.iterator(iterator, { 3, 0 }, { 3, 2 })
+      assert.iterator(iterator, { 3, 1 }, { 3, 3 })
     end)
 
     it("next with a count", function()
       local iterator = pattern_iterator.new_forward("\\M<a>", {
-        from_search_position = { 0, 0 }
+        from_search_position = { 1, 1 }
       })
       assert.is.True(iterator:next(2))
-      assert.iterator(iterator, { 3, 0 }, { 3, 2 })
+      assert.iterator(iterator, { 3, 1 }, { 3, 3 })
     end)
 
     it("next hits the last", function()
       local iterator = pattern_iterator.new_around("\\M<a>", {
-        from_search_position = { 3, 0 }
+        from_search_position = { 3, 1 }
       })
       assert.is.False(iterator:next())
-      assert.iterator(iterator, { 3, 0 }, { 3, 2 })
+      assert.iterator(iterator, { 3, 1 }, { 3, 3 })
     end)
   end)
 
   describe("previous()", function()
     it("simple previous", function()
       local iterator = pattern_iterator.new_around("\\M<a>", {
-        from_search_position = { 2, 6 }
+        from_search_position = { 2, 7 }
       })
       assert.is.True(iterator:previous())
-      assert.iterator(iterator, { 1, 10 }, { 1, 12 })
+      assert.iterator(iterator, { 1, 11 }, { 1, 13 })
     end)
 
     it("previous with a count", function()
       local iterator = pattern_iterator.new_around("\\M<a>", {
-        from_search_position = { 3, 0 }
+        from_search_position = { 3, 1 }
       })
       assert.is.True(iterator:previous(2))
-      assert.iterator(iterator, { 1, 10 }, { 1, 12 })
+      assert.iterator(iterator, { 1, 11 }, { 1, 13 })
     end)
 
     it("previous hits the first", function()
       local iterator = pattern_iterator.new_around("\\M<a>", {
-        from_search_position = { 1, 11 }
+        from_search_position = { 1, 12 }
       })
       assert.is.False(iterator:previous())
-      assert.iterator(iterator, { 1, 10 }, { 1, 12 })
+      assert.iterator(iterator, { 1, 11 }, { 1, 13 })
     end)
   end)
 
   describe("pattern == '$'", function()
     it("with n_is_pointable == true", function()
       local iterator = pattern_iterator.new_around("\\v$", {
-        from_search_position = { 2, 13 },
+        from_search_position = { 2, 14 },
         n_is_pointable = true,
       })
 
-      assert.iterator(iterator, { 2, 13 }, { 2, 13 })
+      assert.iterator(iterator, { 2, 14 }, { 2, 14 })
 
       assert.is.True(iterator:next())
-      assert.iterator(iterator, { 3, 13 }, { 3, 13 })
+      assert.iterator(iterator, { 3, 14 }, { 3, 14 })
 
       assert.is.False(iterator:next())
-      assert.iterator(iterator, { 3, 13 }, { 3, 13 })
+      assert.iterator(iterator, { 3, 14 }, { 3, 14 })
 
       assert.is.True(iterator:previous())
-      assert.iterator(iterator, { 2, 13 }, { 2, 13 })
+      assert.iterator(iterator, { 2, 14 }, { 2, 14 })
 
       assert.is.True(iterator:previous())
-      assert.iterator(iterator, { 1, 13 }, { 1, 13 })
+      assert.iterator(iterator, { 1, 14 }, { 1, 14 })
 
       assert.is.False(iterator:previous())
-      assert.iterator(iterator, { 1, 13 }, { 1, 13 })
+      assert.iterator(iterator, { 1, 14 }, { 1, 14 })
 
       assert.is.True(iterator:next())
-      assert.iterator(iterator, { 2, 13 }, { 2, 13 })
+      assert.iterator(iterator, { 2, 14 }, { 2, 14 })
     end)
 
     it("with n_is_pointable == false", function()
       local iterator = pattern_iterator.new_around("\\v$", {
-        from_search_position = { 2, 13 },
+        from_search_position = { 2, 14 },
         n_is_pointable = false,
       })
 
-      assert.iterator(iterator, { 2, 12 }, { 2, 12 })
+      assert.iterator(iterator, { 2, 13 }, { 2, 13 })
 
       assert.is.True(iterator:next())
-      assert.iterator(iterator, { 3, 12 }, { 3, 12 })
+      assert.iterator(iterator, { 3, 13 }, { 3, 13 })
 
       assert.is.False(iterator:next())
-      assert.iterator(iterator, { 3, 12 }, { 3, 12 })
+      assert.iterator(iterator, { 3, 13 }, { 3, 13 })
 
       assert.is.True(iterator:previous())
-      assert.iterator(iterator, { 2, 12 }, { 2, 12 })
+      assert.iterator(iterator, { 2, 13 }, { 2, 13 })
 
       assert.is.True(iterator:previous())
-      assert.iterator(iterator, { 1, 12 }, { 1, 12 })
+      assert.iterator(iterator, { 1, 13 }, { 1, 13 })
 
       assert.is.False(iterator:previous())
-      assert.iterator(iterator, { 1, 12 }, { 1, 12 })
+      assert.iterator(iterator, { 1, 13 }, { 1, 13 })
 
       assert.is.True(iterator:next())
-      assert.iterator(iterator, { 2, 12 }, { 2, 12 })
+      assert.iterator(iterator, { 2, 13 }, { 2, 13 })
     end)
   end)
 
   it("pattern == '^'", function()
     local iterator = pattern_iterator.new_around("\\v^", {
-      from_search_position = { 2, 0 },
+      from_search_position = { 2, 1 },
     })
 
-    assert.iterator(iterator, { 2, 0 }, { 2, 0 })
+    assert.iterator(iterator, { 2, 1 }, { 2, 1 })
 
     assert.is.True(iterator:next())
-    assert.iterator(iterator, { 3, 0 }, { 3, 0 })
+    assert.iterator(iterator, { 3, 1 }, { 3, 1 })
 
     assert.is.False(iterator:next())
-    assert.iterator(iterator, { 3, 0 }, { 3, 0 })
+    assert.iterator(iterator, { 3, 1 }, { 3, 1 })
 
     assert.is.True(iterator:previous())
-    assert.iterator(iterator, { 2, 0 }, { 2, 0 })
+    assert.iterator(iterator, { 2, 1 }, { 2, 1 })
 
     assert.is.True(iterator:previous())
-    assert.iterator(iterator, { 1, 0 }, { 1, 0 })
+    assert.iterator(iterator, { 1, 1 }, { 1, 1 })
 
     assert.is.False(iterator:previous())
-    assert.iterator(iterator, { 1, 0 }, { 1, 0 })
+    assert.iterator(iterator, { 1, 1 }, { 1, 1 })
 
     assert.is.True(iterator:next())
-    assert.iterator(iterator, { 2, 0 }, { 2, 0 })
+    assert.iterator(iterator, { 2, 1 }, { 2, 1 })
   end)
 
   it("pattern == 'a\\na'", function()
@@ -230,50 +230,50 @@ describe("pattern-iterator", function()
     ]])()
 
     local iterator = pattern_iterator.new_around("a\\na", {
-      from_search_position = { 1, 3 },
+      from_search_position = { 1, 4 },
     })
 
-    assert.iterator(iterator, { 1, 3 }, { 2, 0 })
+    assert.iterator(iterator, { 1, 4 }, { 2, 1 })
 
     assert.is.True(iterator:next())
-    assert.iterator(iterator, { 2, 4 }, { 3, 0 })
+    assert.iterator(iterator, { 2, 5 }, { 3, 1 })
 
     assert.is.False(iterator:next())
-    assert.iterator(iterator, { 2, 4 }, { 3, 0 })
+    assert.iterator(iterator, { 2, 5 }, { 3, 1 })
 
     assert.is.True(iterator:previous())
-    assert.iterator(iterator, { 1, 3 }, { 2, 0 })
+    assert.iterator(iterator, { 1, 4 }, { 2, 1 })
 
     assert.is.False(iterator:previous())
-    assert.iterator(iterator, { 1, 3 }, { 2, 0 })
+    assert.iterator(iterator, { 1, 4 }, { 2, 1 })
 
     assert.is.True(iterator:next())
-    assert.iterator(iterator, { 2, 4 }, { 3, 0 })
+    assert.iterator(iterator, { 2, 5 }, { 3, 1 })
   end)
 
   it("dense matches placement", function()
     h.get_preset("aaaaa")()
 
     local iterator = pattern_iterator.new_around("\\Ma", {
-      from_search_position = { 1, 2 },
+      from_search_position = { 1, 3 },
     })
 
-    assert.iterator(iterator, { 1, 2 }, { 1, 2 })
+    assert.iterator(iterator, { 1, 3 }, { 1, 3 })
 
     assert.is.True(iterator:next(2))
-    assert.iterator(iterator, { 1, 4 }, { 1, 4 })
+    assert.iterator(iterator, { 1, 5 }, { 1, 5 })
 
     assert.is.False(iterator:next())
-    assert.iterator(iterator, { 1, 4 }, { 1, 4 })
+    assert.iterator(iterator, { 1, 5 }, { 1, 5 })
 
     assert.is.True(iterator:previous(4))
-    assert.iterator(iterator, { 1, 0 }, { 1, 0 })
+    assert.iterator(iterator, { 1, 1 }, { 1, 1 })
 
     assert.is.False(iterator:previous())
-    assert.iterator(iterator, { 1, 0 }, { 1, 0 })
+    assert.iterator(iterator, { 1, 1 }, { 1, 1 })
 
     assert.is.True(iterator:next(2))
-    assert.iterator(iterator, { 1, 2 }, { 1, 2 })
+    assert.iterator(iterator, { 1, 3 }, { 1, 3 })
   end)
 
   it("non-ascii text", function()
@@ -281,18 +281,18 @@ describe("pattern-iterator", function()
 
     local lower_word = "\\v[[:lower:]]+"
     local iterator = pattern_iterator.new_around(lower_word, {
-      from_search_position = { 1, 12 },
+      from_search_position = { 1, 13 },
     })
 
-    assert.iterator(iterator, { 1, 10 }, { 1, 14 })
+    assert.iterator(iterator, { 1, 11 }, { 1, 15 })
 
     assert.is.True(iterator:next())
-    assert.iterator(iterator, { 1, 16 }, { 1, 18 })
+    assert.iterator(iterator, { 1, 17 }, { 1, 19 })
 
     assert.is.True(iterator:previous())
-    assert.iterator(iterator, { 1, 10 }, { 1, 14 })
+    assert.iterator(iterator, { 1, 11 }, { 1, 15 })
 
     assert.is.True(iterator:previous())
-    assert.iterator(iterator, { 1, 0 }, { 1, 8 })
+    assert.iterator(iterator, { 1, 1 }, { 1, 9 })
   end)
 end)

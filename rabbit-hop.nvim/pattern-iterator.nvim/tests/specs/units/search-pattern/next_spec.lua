@@ -23,10 +23,10 @@ describe("search-pattern.next", function()
   it("the cursor shouldn't change the position", function()
     h.get_preset("<b> <b> <b>")()
 
-    local from_position = position.from_coordinates(1, 4)
+    local from_position = position.from_coordinates(1, 5)
     search_pattern.next("<b>", from_position)
 
-    assert.cursor_at(1, 0)
+    assert.cursor_at(1, 1)
   end)
 
   describe("simple pattern", function()
@@ -34,31 +34,31 @@ describe("search-pattern.next", function()
     local pattern = "\\M<a>"
 
     it("from a position that is before a match", function()
-      local from_position = position.from_coordinates(1, 3)
+      local from_position = position.from_coordinates(1, 4)
       local match_position = search_pattern.next(pattern, from_position)
 
-      assert.match_position(match_position, { 1, 4 }, { 1, 6 })
+      assert.match_position(match_position, { 1, 5 }, { 1, 7 })
     end)
 
     it("from a position that is at the start of a previous match", function()
-      local from_position = position.from_coordinates(1, 0)
-      local match_position = search_pattern.next(pattern, from_position)
-
-      assert.match_position(match_position, { 1, 4 }, { 1, 6 })
-    end)
-
-    it("from a position that is in the middle of a previous match", function()
       local from_position = position.from_coordinates(1, 1)
       local match_position = search_pattern.next(pattern, from_position)
 
-      assert.match_position(match_position, { 1, 4 }, { 1, 6 })
+      assert.match_position(match_position, { 1, 5 }, { 1, 7 })
     end)
 
-    it("from a position that is at the end of a previous match", function()
+    it("from a position that is in the middle of a previous match", function()
       local from_position = position.from_coordinates(1, 2)
       local match_position = search_pattern.next(pattern, from_position)
 
-      assert.match_position(match_position, { 1, 4 }, { 1, 6 })
+      assert.match_position(match_position, { 1, 5 }, { 1, 7 })
+    end)
+
+    it("from a position that is at the end of a previous match", function()
+      local from_position = position.from_coordinates(1, 3)
+      local match_position = search_pattern.next(pattern, from_position)
+
+      assert.match_position(match_position, { 1, 5 }, { 1, 7 })
     end)
   end)
 
@@ -71,49 +71,49 @@ describe("search-pattern.next", function()
 
     describe("pattern == '$'", function()
       it("from a position that is before the match", function()
-        local from_position = position.from_coordinates(2, 4)
+        local from_position = position.from_coordinates(2, 5)
         local match_position = search_pattern.next("\\v$", from_position)
 
-        assert.match_position(match_position, { 2, 5 }, { 2, 5 })
+        assert.match_position(match_position, { 2, 6 }, { 2, 6 })
       end)
 
       it("from a position that is at the match", function()
-        local from_position = position.from_coordinates(1, 4, true)
+        local from_position = position.from_coordinates(1, 5, true)
         local match_position = search_pattern.next("\\v$", from_position)
 
-        assert.match_position(match_position, { 2, 5 }, { 2, 5 })
+        assert.match_position(match_position, { 2, 6 }, { 2, 6 })
       end)
     end)
 
     describe("pattern == '^'", function()
       it("from a position that is before the match", function()
-        local from_position = position.from_coordinates(1, 4, true)
+        local from_position = position.from_coordinates(1, 5, true)
         local match_position = search_pattern.next("\\v^", from_position)
 
-        assert.match_position(match_position, { 2, 0 }, { 2, 0 })
+        assert.match_position(match_position, { 2, 1 }, { 2, 1 })
       end)
 
       it("from a position that is on the match", function()
-        local from_position = position.from_coordinates(2, 0, true)
+        local from_position = position.from_coordinates(2, 1, true)
         local match_position = search_pattern.next("\\v^", from_position)
 
-        assert.match_position(match_position, { 3, 0 }, { 3, 0 })
+        assert.match_position(match_position, { 3, 1 }, { 3, 1 })
       end)
     end)
 
     describe("pattern == 'a\\na'", function()
       it("from a position that is before the match", function()
-        local from_position = position.from_coordinates(1, 2, true)
-        local match_position = search_pattern.next("\\va\\na", from_position)
-
-        assert.match_position(match_position, { 1, 3 }, { 2, 0 })
-      end)
-
-      it("from a position that is on the match", function()
         local from_position = position.from_coordinates(1, 3, true)
         local match_position = search_pattern.next("\\va\\na", from_position)
 
-        assert.match_position(match_position, { 2, 4 }, { 3, 0 })
+        assert.match_position(match_position, { 1, 4 }, { 2, 1 })
+      end)
+
+      it("from a position that is on the match", function()
+        local from_position = position.from_coordinates(1, 4, true)
+        local match_position = search_pattern.next("\\va\\na", from_position)
+
+        assert.match_position(match_position, { 2, 5 }, { 3, 1 })
       end)
     end)
   end)

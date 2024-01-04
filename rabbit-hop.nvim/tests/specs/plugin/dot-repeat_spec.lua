@@ -15,7 +15,7 @@ local hop_before_match = function(pattern)
 end
 
 describe("dot `.` repeat", function()
-  before_each(h.get_preset("<a> <a> <a> <a> <a> <a>", { 1, 0 }))
+  before_each(h.get_preset("<a> <a> <a> <a> <a> <a>", { 1, 1 }))
   local pattern = "\\M<a>"
 
   it("should work", function()
@@ -49,11 +49,11 @@ describe("dot `.` repeat", function()
     vim.api.nvim_feedkeys("2d", "n", false)
     hop_before_match(pattern)
     assert.buffer("<a> <a> <a> <a>")
-    h.set_cursor(1, 0)
+    h.set_cursor(1, 1)
 
     vim.api.nvim_feedkeys("3", "n", false)
     hop_before_match(pattern)
-    h.set_cursor(1, 0)
+    h.set_cursor(1, 1)
 
     vim.api.nvim_feedkeys(".", "nx", false)
     assert.buffer("<a> <a>")
