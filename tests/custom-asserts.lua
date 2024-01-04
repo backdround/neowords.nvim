@@ -56,13 +56,24 @@ local function buffer(_, arguments)
   return user_text == buffer_text
 end
 
-local function last_selected_region(_, arguments)
+local function selected_region(_, arguments)
   local expected_left_mark = arguments[1]
   local expected_right_mark = arguments[2]
 
+  -- Reset visual mode if it's in visual
+  local restore_visual_mode = false
+  if tostring(vim.fn.mode(true)):find("[vV]") ~= nil then
+    restore_visual_mode = true
+    local esc = vim.api.nvim_replace_termcodes("<esc>", true, false, true)
+    vim.api.nvim_feedkeys(esc, "nx", false)
+  end
 
   local real_left_mark = get_char_position("'<")
   local real_right_mark = get_char_position("'>")
+
+  if restore_visual_mode then
+    vim.api.nvim_feedkeys("gv", "nx", false)
+  end
 
   table.insert(arguments, 1, vim.inspect(real_left_mark))
   table.insert(arguments, 2, vim.inspect(real_right_mark))
@@ -103,15 +114,15 @@ local register = function()
   )
 
   say:set(
-    "assertion.last_selected_region",
+    "assertion.selected_region",
     "Expected selected region to be:" ..
     "\nReal:\n %s, %s \nExpected:\n %s, %s"
   )
   assert:register(
     "assertion",
-    "last_selected_region",
-    last_selected_region,
-    "assertion.last_selected_region"
+    "selected_region",
+    selected_region,
+    "assertion.selected_region"
   )
 end
 
