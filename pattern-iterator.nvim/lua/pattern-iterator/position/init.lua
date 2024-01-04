@@ -101,11 +101,12 @@ local new_position = function(line, column, n_is_pointable)
     vim.fn.setcharpos("'<", { 0, p1.line, p1.column + 1, 0 })
     vim.fn.setcharpos("'>", { 0, p2.line, p2.column + 1, 0 })
 
-    vim.api.nvim_feedkeys("gv", "nx", false)
-
+    local keys_to_select_marks = "gv"
     if vim.fn.visualmode() ~= "v" and vim.fn.visualmode() ~= "" then
-      vim.api.nvim_feedkeys("v", "nx", false)
+      keys_to_select_marks = "gvv"
     end
+
+    vim.cmd.normal({ args = { keys_to_select_marks }, bang = true })
   end
 
   ---Sets new n_is_pointable

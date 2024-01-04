@@ -6,7 +6,8 @@ Table of Contents                          *rabbit-hop.nvim-table-of-contents*
 1. Rabbit-hop.nvim                           |rabbit-hop.nvim-rabbit-hop.nvim|
 2. Configuration example               |rabbit-hop.nvim-configuration-example|
 3. Additional configuration examples|rabbit-hop.nvim-additional-configuration-examples|
-4. Plugin hop options                     |rabbit-hop.nvim-plugin-hop-options|
+4. Plugin API                                     |rabbit-hop.nvim-plugin-api|
+  - RH_PluginOptions:           |rabbit-hop.nvim-plugin-api-rh_pluginoptions:|
 
 ==============================================================================
 1. Rabbit-hop.nvim                           *rabbit-hop.nvim-rabbit-hop.nvim*
@@ -138,7 +139,18 @@ Hop inside / outside round brackets ~
 
 
 ==============================================================================
-4. Plugin hop options                     *rabbit-hop.nvim-plugin-hop-options*
+4. Plugin API                                     *rabbit-hop.nvim-plugin-api*
+
+>lua
+    local hop = require("rabbit-hop").hop
+    
+    --- `performed` (boolean) Indicates that the hop has been performed.
+    --- `options` (RH_PluginOptions) Adjust the behavior of the hop.
+    local performed = hop(options)
+<
+
+
+RH_PLUGINOPTIONS:               *rabbit-hop.nvim-plugin-api-rh_pluginoptions:*
 
   --------------------------------------------------------------------------------
   Option                     Default           Possible          Description
