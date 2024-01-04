@@ -15,10 +15,11 @@ local function concatenate_lines(lines)
   return text
 end
 
-local function from_bytes_to_position(position)
+local function get_char_position(expression)
+  local position = vim.fn.getcharpos(expression)
   return {
-    position[1],
-    vim.fn.virtcol(position)
+    position[2],
+    position[3],
   }
 end
 
@@ -27,17 +28,16 @@ end
 
 local function cursor_at(_, arguments)
   local line = arguments[1]
-  local column = arguments[2]
+  local char_index = arguments[2]
 
-  local byte_position = vim.api.nvim_win_get_cursor(0)
-  local position = from_bytes_to_position(byte_position)
+  local position = get_char_position(".")
 
   -- Prepare arguments for assert output
   table.insert(arguments, 1, position[1])
   table.insert(arguments, 2, position[2])
   arguments.nofmt = { 1, 2, 3, 4 }
 
-  return line == position[1] and column == position[2]
+  return line == position[1] and char_index == position[2]
 end
 
 local function buffer(_, arguments)
@@ -60,13 +60,9 @@ local function last_selected_region(_, arguments)
   local expected_left_mark = arguments[1]
   local expected_right_mark = arguments[2]
 
-  local get_mark_position = function(name)
-    local byte_position = vim.api.nvim_buf_get_mark(0, name)
-    return from_bytes_to_position(byte_position)
-  end
 
-  local real_left_mark = get_mark_position("<")
-  local real_right_mark = get_mark_position(">")
+  local real_left_mark = get_char_position("'<")
+  local real_right_mark = get_char_position("'>")
 
   table.insert(arguments, 1, vim.inspect(real_left_mark))
   table.insert(arguments, 2, vim.inspect(real_right_mark))
