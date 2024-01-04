@@ -7,6 +7,32 @@ describe("basic", function()
   before_each(h.get_preset("aa aa aa aa aa", { 1, 6 }))
   local pattern = "\\Maa"
 
+  it("no match", function()
+    local performed = nil
+    h.perform_through_keymap(function()
+      performed = rabbit_hop.hop({
+        pattern = "aaa",
+        direction = "forward",
+        match_position = "start",
+      })
+    end, true)
+    assert.is.False(performed)
+    assert.cursor_at(1, 6)
+  end)
+
+  it("there is a match", function()
+    local performed = nil
+    h.perform_through_keymap(function()
+      performed = rabbit_hop.hop({
+        pattern = "aa",
+        direction = "forward",
+        match_position = "start",
+      })
+    end, true)
+    assert.is.True(performed)
+    assert.cursor_at(1, 9)
+  end)
+
   it("normal hop with options", function()
     h.perform_through_keymap(rabbit_hop.hop, true, {
       pattern = pattern,

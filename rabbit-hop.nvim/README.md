@@ -152,8 +152,17 @@ end)
 ***
 
 <!-- panvimdoc-ignore-end -->
-### Plugin hop options
 
+### Plugin API
+```lua
+local hop = require("rabbit-hop").hop
+
+--- `performed` (boolean) Indicates that the hop has been performed.
+--- `options` (RH_PluginOptions) Adjust the behavior of the hop.
+local performed = hop(options)
+```
+
+#### `RH_PluginOptions`:
 | Option | Default | Possible | Description |
 | --- | --- | --- | --- |
 | `pattern` | - | any vim pattern | Pattern to hop. |

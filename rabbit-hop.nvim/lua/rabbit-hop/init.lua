@@ -10,6 +10,7 @@ local M = {}
 ---@field insert_mode_target_side? "left"|"right" side to place the cursor in insert mode.
 
 ---@param plugin_options RH_PluginOptions
+---@return boolean The hop has been performed.
 M.hop = function(plugin_options)
   ---@type RH_ApiHopOptions
   local api_options = {
@@ -26,7 +27,7 @@ M.hop = function(plugin_options)
     api_options.count = 1
   end
 
-  hop_api.hop(api_options)
+  return hop_api.hop(api_options)
 end
 
 return M

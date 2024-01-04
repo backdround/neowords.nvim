@@ -87,6 +87,7 @@ end
 
 ---Performs a hop to a given pattern
 ---@param opts RH_HopOptions
+---@return boolean The hop has been performed.
 local perform = function(opts)
   local apply_offset = function(match)
     local p = nil
@@ -131,12 +132,12 @@ local perform = function(opts)
   end
 
   if not target_position then
-    return
+    return false
   end
 
   if mode() ~= "operator-pending" then
     target_position:set_cursor()
-    return
+    return true
   end
 
   local start_position = position.from_cursor(n_is_pointable)
@@ -145,6 +146,7 @@ local perform = function(opts)
   end
 
   start_position:select_region_to(target_position)
+  return true
 end
 
 return perform

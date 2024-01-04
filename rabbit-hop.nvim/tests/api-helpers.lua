@@ -8,6 +8,7 @@ local M = {}
 ---@param direction? "forward"|"backward"
 ---@param match_position? "start"|"end"
 ---@param additional_options? table|nil
+---@return boolean The hop has been performed.
 M.hop = function(pattern, direction, match_position, additional_options)
   local hop_options = vim.deepcopy(additional_options or {})
 
@@ -15,7 +16,11 @@ M.hop = function(pattern, direction, match_position, additional_options)
   hop_options.match_position = match_position
   hop_options.pattern = pattern
 
-  h.perform_through_keymap(rabbit_hop_api.hop, true, hop_options)
+  local result = nil
+  h.perform_through_keymap(function()
+    result = rabbit_hop_api.hop(hop_options)
+  end, true)
+  return result
 end
 
 return M

@@ -270,6 +270,36 @@ describe("position", function()
           assert.buffer("somhere")
         end)
 
+        it("in dot repeat", function()
+          local captured_data = {
+            p1 = position.from_coordinates(1, 0, true),
+            p2 = position.from_coordinates(1, 3, true),
+          }
+
+          h.feedkeys("c", false)
+          h.perform_through_keymap(function()
+            captured_data.p1:select_region_to(captured_data.p2)
+          end, false)
+          h.feedkeys("aa", false)
+          h.feedkeys("<esc>", true)
+
+          assert.buffer([[
+            aa
+            words
+            here
+          ]])
+
+          captured_data.p1 = position.from_coordinates(2, 0, true)
+          captured_data.p2 = position.from_coordinates(2, 4, true)
+          h.feedkeys(".", true)
+
+          assert.buffer([[
+            aa
+            aa
+            here
+          ]])
+        end)
+
         describe("with 'selection' == 'exclusive'", function()
           it("forward", function()
             vim.go.selection = "exclusive"

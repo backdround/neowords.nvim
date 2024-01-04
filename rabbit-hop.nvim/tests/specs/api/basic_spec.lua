@@ -10,8 +10,15 @@ describe("basic", function()
   ]], { 1, 6 }))
 
   it("no match", function()
-    hop("aaa", "forward", "start")
+    local performed = hop("aaa", "forward", "start")
+    assert.is.False(performed)
     assert.cursor_at(1, 6)
+  end)
+
+  it("there is a match", function()
+    local performed = hop("bb", "forward", "start")
+    assert.is.True(performed)
+    assert.cursor_at(1, 8)
   end)
 
   describe("normal mode", function()
