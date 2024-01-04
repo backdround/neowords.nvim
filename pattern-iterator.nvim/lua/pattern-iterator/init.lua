@@ -6,7 +6,7 @@ local new_iterator = require(({ ... })[1] .. ".iterator").new
 ---Additional options for pattern iterator search.
 ---@class PI_SearchOptions
 ---@field n_is_pointable? boolean position can point to a \n.
----@field from_search_position? number[] (1, 0) indexed, line and virtual column.
+---@field from_search_position? number[] (1, 1) indexed, line and char index.
 
 ---Searches a given pattern relatively to the from_search_position or the
 ---cursor in a given area and returns a new pattern iterator.

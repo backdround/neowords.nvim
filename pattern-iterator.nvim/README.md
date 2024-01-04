@@ -70,7 +70,8 @@ new_backward(pattern,options?) | PI_Iterator? | Creates an iterator that points 
 
 ```lua
 local options = {
-  -- Base position to search from.
+  -- base position to search from.
+  -- It's 1-based line and 1-based character index.
   -- If nil then it uses the cursor position.
   from_search_position = { 2, 6 },
   -- Used to indicate if the end of the line `\n` is pointable.
@@ -97,6 +98,6 @@ before_cursor() | boolean | Indicates that the current position is before the cu
 after_cursor() | boolean | Indicates that the current position is after the cursor.
 move(offset) | - | Moves the position according to the offset. If offset > 0 then it moves forward else backward.
 set_n_is_pointable(n_is_pointable) | - | Sets the flag that indicates that the position can point to the `\n`.
-line | number | Position's line.
-column | number | Position's virtual column.
+line | number | 1-based position's line.
+char_index | number | 1-based position's char index.
 n_is_pointable | boolean | The flag that indicates that the position can point to the `\n`.
