@@ -169,4 +169,8 @@ local performed = hop(options)
 | `direction?` | `"forward"` | `"forward"`, `"backward"` | Direction to hop. |
 | `match_position?` | `"start"` | `"start"`, `"end"` | Sets which end of the match to use. |
 | `offset?` | 0 | any number | Advances final position relatively `match_position`. |
-| `insert_mode_target_side?` | `"left"` | `"left"`, `"right"` | Side to place the cursor in insert mode. It's applied after.
+| `insert_mode_target_side?` | `"left"` | `"left"`, `"right"` | Side to place the cursor in insert mode. It's applied after all offsets.
+| `accept_policy` | `"from-after-cursor"` | `"from-after-cursor"`, `"from-cursor"`, `"any"` | Indicates whether a potential position should be accepted.
+| - | - | `"from-after-cursor"` | Accepts all positions in the direction of the hop after the cursor.
+| - | - | `"from-cursor"` | Accepts the position at the cursor and all positions in the direction of the hop after the cursor.
+| - | - | `"any"` | Accepts all positions even if a position moves the cursor backward from hop direction.

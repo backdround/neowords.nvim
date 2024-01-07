@@ -65,6 +65,15 @@ local new_position = function(line, char_index, n_is_pointable)
     return self.line > cursor_position[1]
   end
 
+  ---Indicates that the current position is on the cursor.
+  ---@param self PI_Position
+  ---@return boolean
+  p.on_cursor = function(self)
+    local cursor_position = utils.get_cursor()
+    return self.line == cursor_position[1]
+      and self.char_index == cursor_position[2]
+  end
+
   ---Indicates that the current position is before the cursor.
   ---@param self PI_Position
   ---@return boolean

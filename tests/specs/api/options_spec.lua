@@ -120,4 +120,56 @@ describe("main", function()
       assert.cursor_at(2, 7)
     end)
   end)
+
+  describe("accept_policy", function()
+    describe("forward", function()
+      it("from-after-cursor accepts only positions after the cursor", function()
+        api_helpers.hop(pattern, "forward", "start", {
+          accept_policy = "from-after-cursor",
+        })
+        assert.cursor_at(1, 7)
+      end)
+
+      it("from-cursor accepts positions after ar at the cursor", function()
+        api_helpers.hop(pattern, "forward", "start", {
+          accept_policy = "from-cursor",
+        })
+        assert.cursor_at(1, 4)
+      end)
+
+      it("any accepts any position", function()
+        h.set_cursor(1, 5)
+        api_helpers.hop(pattern, "forward", "start", {
+          accept_policy = "any",
+        })
+        assert.cursor_at(1, 4)
+      end)
+    end)
+
+    describe("backward", function()
+      it("from-after-cursor accepts only positions before the cursor", function()
+        h.set_cursor(1, 5)
+        api_helpers.hop(pattern, "backward", "end", {
+          accept_policy = "from-after-cursor",
+        })
+        assert.cursor_at(1, 2)
+      end)
+
+      it("from-cursor accepts positions before ar at the cursor", function()
+        h.set_cursor(1, 5)
+        api_helpers.hop(pattern, "backward", "end", {
+          accept_policy = "from-cursor",
+        })
+        assert.cursor_at(1, 5)
+      end)
+
+      it("any accepts any position", function()
+        h.set_cursor(1, 4)
+        api_helpers.hop(pattern, "backward", "end", {
+          accept_policy = "any",
+        })
+        assert.cursor_at(1, 5)
+      end)
+    end)
+  end)
 end)

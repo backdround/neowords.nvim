@@ -53,7 +53,16 @@ end
 
 local assert_count = function(count)
   if count ~= nil and type(count) ~= "number" then
-    error("count must be a number, but it is: " .. tostring(type(count)))
+    error("count must be a number|nil, but it is: " .. tostring(type(count)))
+  end
+end
+
+local assert_accept_policy = function(accept_policy)
+  if accept_policy ~= nil and type(accept_policy) ~= "string" then
+    error(
+      'accept_policy must be "from-after-cursor"|"from-cursor"|"any"|nil, but it is: '
+        .. tostring(type(accept_policy))
+    )
   end
 end
 
@@ -64,6 +73,7 @@ end
 ---@field match_position? "start"|"end" Indicates which end of the match to use.
 ---@field offset? number Advances final position relatively match_position.
 ---@field insert_mode_target_side? "left"|"right" side to place the cursor in insert mode.
+---@field accept_policy? "from-after-cursor"|"from-cursor"|"any" Indicates whether a potential position should be accepted.
 ---@field count number? count of hops to perform
 
 ---Checks and fills empty fields with default values
@@ -80,6 +90,7 @@ M.get_hop_options = function(options)
   assert_offset(options.offset)
   assert_insert_mode_target_side(options.insert_mode_target_side)
   assert_count(options.count)
+  assert_accept_policy(options.accept_policy)
 
   local default = {
     direction = "forward",
@@ -87,6 +98,7 @@ M.get_hop_options = function(options)
     offset = 0,
     insert_mode_target_side = "left",
     count = 1,
+    accept_policy = "from-after-cursor",
   }
 
   local hop_options = vim.tbl_extend("force", default, options)

@@ -189,6 +189,18 @@ describe("position", function()
       assert.position(p, { 2, 6, true })
     end)
 
+    it("on_cursor", function()
+      local p = position.from_coordinates(2, 3, true)
+      h.set_cursor(2, 2)
+      assert.is.False(p:on_cursor())
+
+      h.set_cursor(2, 3)
+      assert.is.True(p:on_cursor())
+
+      h.set_cursor(2, 4)
+      assert.is.False(p:on_cursor())
+    end)
+
     it("after_cursor", function()
       local p = position.from_coordinates(2, 3, true)
       h.set_cursor(2, 2)
