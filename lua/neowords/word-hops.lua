@@ -1,4 +1,4 @@
-local rabbit_hop = require("neowords.rabbit-hop.api")
+local rabbit_hop = require("neowords.rabbit-hop.lua.rabbit-hop.api")
 
 local M = {}
 
