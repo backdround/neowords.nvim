@@ -94,6 +94,7 @@ Method / Member | Return type | Description
 -- | -- | --
 set_cursor() | - | Sets the cursor to the position.
 select_region_to(position) | - | Selects a region between the current and another position.
+on_cursor() | boolean | Indicates that the current position is on the cursor.
 before_cursor() | boolean | Indicates that the current position is before the cursor.
 after_cursor() | boolean | Indicates that the current position is after the cursor.
 move(offset) | - | Moves the position according to the offset. If offset > 0 then it moves forward else backward.

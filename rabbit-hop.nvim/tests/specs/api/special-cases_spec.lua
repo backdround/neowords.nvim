@@ -96,4 +96,15 @@ describe("special-cases", function()
       assert.selected_region({ 1, 7 }, { 2, 1 })
     end)
   end)
+
+  it("operator-pending with accept_policy == 'any' and backward hop", function()
+    h.trigger_delete()
+    hop("\\MBC", "forward", "start", {
+      accept_policy = "any",
+    })
+    assert.buffer([[
+      aa aaC bb bb
+      aa aa
+    ]])
+  end)
 end)

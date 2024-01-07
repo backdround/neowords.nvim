@@ -167,6 +167,10 @@ API                          *pattern-iterator.nvim-pattern-iterator.nvim-api*
                                                                between the current and
                                                                another position.
 
+  on_cursor()                          boolean                 Indicates that the
+                                                               current position is on
+                                                               the cursor.
+
   before_cursor()                      boolean                 Indicates that the
                                                                current position is
                                                                before the cursor.
