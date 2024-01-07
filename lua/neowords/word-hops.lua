@@ -56,6 +56,8 @@ M.get = function(...)
         pattern = pattern,
         insert_mode_target_side = "left",
         count = vim.v.count1,
+        accept_policy = is_operator_pending_mode() and "from-cursor"
+          or "from-after-cursor",
       })
     end,
 

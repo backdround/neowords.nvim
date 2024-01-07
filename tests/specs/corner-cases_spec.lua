@@ -13,6 +13,14 @@ describe("corner-cases", function()
     assert.cursor_at(1, 7)
   end)
 
+  it("forward_start in operator-pending mode from a symbol before a word", function()
+    h.get_preset("a word", { 1, 2 })()
+
+    h.trigger_delete()
+    h.perform_through_keymap(hops.forward_start, true)
+    assert.buffer("aword")
+  end)
+
   it("multi-byte text", function()
     h.get_preset("некоторый текст", { 1, 1 })()
 
