@@ -1,4 +1,7 @@
-local rabbit_hop = require("neowords.rabbit-hop.lua.rabbit-hop.api")
+local lazy_rabbit_hop = function(...)
+  local rabbit_hop = require("neowords.rabbit-hop.lua.rabbit-hop.api").hop
+  return rabbit_hop(unpack({ ... }))
+end
 
 local M = {}
 
@@ -49,7 +52,7 @@ M.get = function(...)
 
   return {
     forward_start = function()
-      rabbit_hop.hop({
+      lazy_rabbit_hop({
         direction = "forward",
         match_position = "start",
         offset = is_operator_pending_mode() and -1 or 0,
@@ -62,7 +65,7 @@ M.get = function(...)
     end,
 
     forward_end = function()
-      rabbit_hop.hop({
+      lazy_rabbit_hop({
         direction = "forward",
         match_position = "end",
         pattern = pattern,
@@ -72,7 +75,7 @@ M.get = function(...)
     end,
 
     backward_end = function()
-      rabbit_hop.hop({
+      lazy_rabbit_hop({
         direction = "backward",
         match_position = "end",
         offset = is_operator_pending_mode() and 1 or 0,
@@ -83,7 +86,7 @@ M.get = function(...)
     end,
 
     backward_start = function()
-      rabbit_hop.hop({
+      lazy_rabbit_hop({
         direction = "backward",
         match_position = "start",
         pattern = pattern,
