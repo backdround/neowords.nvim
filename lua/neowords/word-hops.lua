@@ -13,6 +13,14 @@ local is_operator_pending_mode = function()
   return false
 end
 
+local on_first_character_in_buffer = function()
+  local cursor = vim.api.nvim_win_get_cursor(0)
+  if cursor[1] == 1 and cursor[2] == 0 then
+    return true
+  end
+  return false
+end
+
 ---Unites patterns into one pattern
 ---@param ... string
 ---@return string
@@ -52,6 +60,22 @@ M.get = function(...)
 
   return {
     forward_start = function()
+      local accept_policy = "from-after-cursor"
+      if is_operator_pending_mode() then
+        accept_policy = "from-cursor"
+      end
+
+      -- Special case when:
+      -- - In operator mode
+      -- - On the first character in the buffer
+      -- - Under the cursor a word that matches the pattern.
+      if on_first_character_in_buffer() then
+        local position = vim.fn.searchpos(pattern, "nc")
+        if position[1] == 1 and position[2] == 1 then
+          accept_policy = "from-after-cursor"
+        end
+      end
+
       lazy_rabbit_hop({
         direction = "forward",
         match_position = "start",
@@ -59,8 +83,7 @@ M.get = function(...)
         pattern = pattern,
         insert_mode_target_side = "left",
         count = vim.v.count1,
-        accept_policy = is_operator_pending_mode() and "from-cursor"
-          or "from-after-cursor",
+        accept_policy = accept_policy
       })
     end,
 

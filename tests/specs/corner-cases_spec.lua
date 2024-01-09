@@ -13,6 +13,16 @@ describe("corner-cases", function()
     assert.cursor_at(1, 7)
   end)
 
+  local description =
+    "operator-pending forward_start from a cursor on the first character in the buffer"
+  it(description, function()
+    h.get_preset("several_snake_words", { 1, 1 })()
+
+    h.trigger_delete()
+    h.perform_through_keymap(hops.forward_start, true)
+    assert.buffer("snake_words")
+  end)
+
   it("forward_start in operator-pending mode from a symbol before a word", function()
     h.get_preset("a word", { 1, 2 })()
 
