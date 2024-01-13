@@ -46,6 +46,19 @@ local unite_patterns = function(...)
   return result_pattern
 end
 
+---@return string
+M._get_fold_policy = function()
+  if not M._foldopen_tracker then
+    M._foldopen_tracker = require("neowords.foldopen-tracker").new()
+  end
+
+  if M._foldopen_tracker.has_hor() then
+    return "hop-in-and-open"
+  else
+    return "hop-once"
+  end
+end
+
 ---@class NW_WordHops
 ---@field forward_start function hop forward to a pattern start
 ---@field forward_end function hop forward to a pattern end
@@ -83,7 +96,8 @@ M.get = function(...)
         pattern = pattern,
         insert_mode_target_side = "left",
         count = vim.v.count1,
-        accept_policy = accept_policy
+        accept_policy = accept_policy,
+        fold_policy = M._get_fold_policy(),
       })
     end,
 
@@ -94,6 +108,7 @@ M.get = function(...)
         pattern = pattern,
         insert_mode_target_side = "right",
         count = vim.v.count1,
+        fold_policy = M._get_fold_policy(),
       })
     end,
 
@@ -105,6 +120,7 @@ M.get = function(...)
         pattern = pattern,
         insert_mode_target_side = "right",
         count = vim.v.count1,
+        fold_policy = M._get_fold_policy(),
       })
     end,
 
@@ -115,6 +131,7 @@ M.get = function(...)
         pattern = pattern,
         insert_mode_target_side = "left",
         count = vim.v.count1,
+        fold_policy = M._get_fold_policy(),
       })
     end,
   }

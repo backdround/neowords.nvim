@@ -15,9 +15,10 @@ of words. It reimplements basic `w`, `e`, `b`, `ge` movements but
 allows a user to have a fine tune over them.
 
 It:
-- treats `corner cases` well (`cw` and others).
+- treats `corner cases` well (`cw` and others);
 - works with `non-ascii` text;
-- works also in `insert` mode;
+- works in `insert` mode;
+- uses `foldopen:hor` option to deal with folds.
 
 If you can't configure your case or think there is a useful
 preset that isn't presented in the show cases, make an issue!
