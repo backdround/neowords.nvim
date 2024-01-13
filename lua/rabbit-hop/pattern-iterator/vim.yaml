@@ -1,0 +1,76 @@
+base: lua51
+name: vim
+
+globals:
+  vim:
+    any: true
+
+  describe:
+    args:
+      - type: string
+      - type: function
+  it:
+    args:
+      - type: string
+      - type: function
+
+  pending:
+    args:
+      - type: string
+
+  before_each:
+    args:
+      - type: function
+  after_each:
+    args:
+      - type: function
+
+  assert.are.same:
+    args:
+      - type: any
+      - type: any
+
+  assert.is:
+    any: true
+  assert.is.Nil:
+    args:
+      - type: any
+  assert.has_error:
+    args:
+      - type: function
+
+  assert.is_not:
+    any: true
+  assert.truthy:
+    any: true
+  assert.spy:
+    any: true
+  assert.stub:
+    any: true
+
+  # Custom asserts
+  assert.cursor_at:
+    args:
+      - type: number
+      - type: number
+  assert.buffer:
+    args:
+      - type: string
+  assert.selected_region:
+    args:
+      - type: table
+      - type: table
+  assert.match_position:
+    args:
+      - type: table
+      - type: table
+      - type: table
+  assert.iterator:
+    args:
+      - type: table
+      - type: table
+      - type: table
+  assert.position:
+    args:
+      - type: table
+      - type: table

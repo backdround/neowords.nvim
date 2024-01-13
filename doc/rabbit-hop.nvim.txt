@@ -1,0 +1,229 @@
+*rabbit-hop.nvim.txt*             For NVIM v0.8.0            Last change: 2024
+
+==============================================================================
+Table of Contents                          *rabbit-hop.nvim-table-of-contents*
+
+1. Rabbit-hop.nvim                           |rabbit-hop.nvim-rabbit-hop.nvim|
+2. Configuration example               |rabbit-hop.nvim-configuration-example|
+3. Additional configuration examples|rabbit-hop.nvim-additional-configuration-examples|
+4. Plugin API                                     |rabbit-hop.nvim-plugin-api|
+  - RH_PluginOptions:           |rabbit-hop.nvim-plugin-api-rh_pluginoptions:|
+
+==============================================================================
+1. Rabbit-hop.nvim                           *rabbit-hop.nvim-rabbit-hop.nvim*
+
+
+
+
+
+
+It’s a Neovim plugin that provides a flexible ability to hop to a user
+defined vim-pattern (quotes, brackets, numbers).
+
+Hops work:
+
+- in multiline;
+- in `normal`, `visual`, `operator-pending` and `insert` modes;
+- with non-ascii text;
+- with the `count` multiplier;
+- with the `dot` repetition.
+
+The plugin:
+
+- Can be used as api for other plugins;
+- Should be stable in corner cases (has lots of tests).
+
+
+==============================================================================
+2. Configuration example               *rabbit-hop.nvim-configuration-example*
+
+>lua
+    local rh = require("rabbit-hop")
+    
+    -- Hop forward inside round brackets.
+    vim.keymap.set({"n", "x", "o"}, "s", function()
+      rh.hop({
+        direction = "forward",
+        match_position = "end",
+        offset = 1,
+        pattern = "\\M(",
+      })
+    end)
+    
+    -- Hop backward inside round brackets.
+    vim.keymap.set({"n", "x", "o"}, "S", function()
+      rh.hop({
+        direction = "backward",
+        match_position = "start",
+        offset = -1,
+        pattern = "\\M)",
+      })
+    end)
+<
+
+
+==============================================================================
+3. Additional configuration examples*rabbit-hop.nvim-additional-configuration-examples*
+
+Hop to a number ~
+
+>lua
+    -- Hop forward to the start of a number.
+    vim.keymap.set({"n", "x", "o"}, "s", function()
+      rh.hop({
+        direction = "forward",
+        match_position = "start",
+        pattern = "\\v\\d+",
+      })
+    end)
+    
+    -- Hop backward to the start of a number.
+    vim.keymap.set({"n", "x", "o"}, "S", function()
+      rh.hop({
+        direction = "backward",
+        match_position = "start",
+        pattern = "\\v\\d+",
+      })
+    end)
+<
+
+Hop inside / outside quotes ~
+
+>lua
+    -- Hop forward past quotes.
+    vim.keymap.set({"n", "x", "o"}, "s", function()
+      rh.hop({
+        direction = "forward",
+        match_position = "end",
+        offset = 1,
+        pattern = "\\v[\"'`]",
+      })
+    end)
+    
+    -- Hop backward past quotes.
+    vim.keymap.set({"n", "x", "o"}, "S", function()
+      rh.hop({
+        direction = "backward",
+        match_position = "start",
+        offset = -1,
+        pattern = "\\v[\"'`]",
+      })
+    end)
+<
+
+Hop inside / outside round brackets ~
+
+>lua
+    -- Hop forward inside / outside round brackets.
+    vim.keymap.set({"n", "x", "o"}, "s", function()
+      rh.hop({
+        direction = "forward",
+        match_position = "end",
+        offset = 1,
+        pattern = "\\v[()]",
+        -- If you don't want to hop past ) which is the last character on the line,
+        -- then use this pattern: "\\v((|\\)$@!)"
+      })
+    end)
+    
+    -- Hop backward inside / outside round brackets.
+    vim.keymap.set({"n", "x", "o"}, "S", function()
+      rh.hop({
+        direction = "backward",
+        match_position = "start",
+        offset = -1,
+        pattern = "\\v[()]",
+      })
+    end)
+<
+
+
+==============================================================================
+4. Plugin API                                     *rabbit-hop.nvim-plugin-api*
+
+>lua
+    local hop = require("rabbit-hop").hop
+    
+    --- `performed` (boolean) Indicates that the hop has been performed.
+    --- `options` (RH_PluginOptions) Adjust the behavior of the hop.
+    local performed = hop(options)
+<
+
+
+RH_PLUGINOPTIONS:               *rabbit-hop.nvim-plugin-api-rh_pluginoptions:*
+
+  -----------------------------------------------------------------------------------------
+  Option                     Default               Possible               Description
+  -------------------------- --------------------- ---------------------- -----------------
+  pattern                    -                     any vim pattern        Pattern to hop.
+
+  direction?                 "forward"             "forward", "backward"  Direction to hop.
+
+  match_position?            "start"               "start", "end"         Sets which end of
+                                                                          the match to use.
+
+  offset?                    0                     any number             Advances final
+                                                                          position
+                                                                          relatively
+                                                                          match_position.
+
+  insert_mode_target_side?   "left"                "left", "right"        Side to place the
+                                                                          cursor in insert
+                                                                          mode. It’s
+                                                                          applied after all
+                                                                          offsets.
+
+  accept_policy?             "from-after-cursor"   "from-after-cursor",   Indicates whether
+                                                   "from-cursor", "any"   a potential
+                                                                          position should
+                                                                          be accepted.
+
+  -                          -                     "from-after-cursor"    Accepts all
+                                                                          positions in the
+                                                                          direction of the
+                                                                          hop after the
+                                                                          cursor.
+
+  -                          -                     "from-cursor"          Accepts the
+                                                                          position at the
+                                                                          cursor and all
+                                                                          positions in the
+                                                                          direction of the
+                                                                          hop after the
+                                                                          cursor.
+
+  -                          -                     "any"                  Accepts all
+                                                                          positions even if
+                                                                          a position moves
+                                                                          the cursor
+                                                                          backward from hop
+                                                                          direction.
+
+  fold_policy?               "hop-once"            "ignore", "hop-once",  Decides how to
+                                                   "hop-in-and-open"      deal with folds.
+
+  -                          -                     "hop-once              Accept a position
+                                                                          in a fold only
+                                                                          once. If there is
+                                                                          no position in a
+                                                                          fold then hops
+                                                                          through.
+
+  -                          -                     "ignore                Ignores all
+                                                                          potential
+                                                                          positions in
+                                                                          folds.
+
+  -                          -                     hop-in-and-open        Accepts all
+                                                                          positions in
+                                                                          folds. If a
+                                                                          target position
+                                                                          is in a fold
+                                                                          then, hops at it
+                                                                          and opens the
+                                                                          fold.
+  -----------------------------------------------------------------------------------------
+
+Generated by panvimdoc <https://github.com/kdheepak/panvimdoc>
+
+vim:tw=78:ts=8:noet:ft=help:norl:
