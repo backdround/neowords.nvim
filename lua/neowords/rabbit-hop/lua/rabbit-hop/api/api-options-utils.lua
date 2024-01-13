@@ -66,6 +66,20 @@ local assert_accept_policy = function(accept_policy)
   end
 end
 
+local assert_fold_policy = function(fold_policy)
+  if
+    fold_policy ~= nil
+    and fold_policy ~= "ignore"
+    and fold_policy ~= "hop-once"
+    and fold_policy ~= "hop-in-and-open"
+  then
+    error(
+      'fold_policy must be "ignore"|"hop-once"|"hop-in-and-open"|nil, but it is: '
+        .. tostring(fold_policy)
+    )
+  end
+end
+
 ---Options that an api user gives
 ---@class RH_ApiHopOptions
 ---@field pattern string
@@ -74,6 +88,7 @@ end
 ---@field offset? number Advances final position relatively match_position.
 ---@field insert_mode_target_side? "left"|"right" side to place the cursor in insert mode.
 ---@field accept_policy? "from-after-cursor"|"from-cursor"|"any" Indicates whether a potential position should be accepted.
+---@field fold_policy? "ignore"|"hop-once"|"hop-in-and-open" Decides how to deal with folds.
 ---@field count number? count of hops to perform
 
 ---Checks and fills empty fields with default values
@@ -91,6 +106,7 @@ M.get_hop_options = function(options)
   assert_insert_mode_target_side(options.insert_mode_target_side)
   assert_count(options.count)
   assert_accept_policy(options.accept_policy)
+  assert_fold_policy(options.fold_policy)
 
   local default = {
     direction = "forward",
@@ -99,6 +115,7 @@ M.get_hop_options = function(options)
     insert_mode_target_side = "left",
     count = 1,
     accept_policy = "from-after-cursor",
+    fold_policy = "hop-once",
   }
 
   local hop_options = vim.tbl_extend("force", default, options)

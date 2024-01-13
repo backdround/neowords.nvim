@@ -1,6 +1,7 @@
 local current_plugin_path = ({ ... })[1]:gsub("[^.]+%.[^.]+$", "")
 local pattern_iterator = require(current_plugin_path .. "pattern-iterator.lua.pattern-iterator")
 local position = require(current_plugin_path .. "pattern-iterator.lua.pattern-iterator.position")
+local new_position_checker = require(current_plugin_path .. "api.position-checker").new
 
 ---@return "operator-pending"|"visual"|"normal"|"insert"
 local mode = function()
@@ -44,31 +45,6 @@ local apply_offset = function(opts, match)
 end
 
 ---@param opts RH_HopOptions
----@param pos PI_Position
----@return boolean
-local is_position_acceptable = function(opts, pos)
-  if opts.direction == "forward" then
-    if opts.accept_policy == "from-after-cursor" then
-      return pos:after_cursor()
-    elseif opts.accept_policy == "from-cursor" then
-      return pos:after_cursor() or pos:on_cursor()
-    elseif opts.accept_policy == "any" then
-      return true
-    end
-    error("Shouldn't be attainable")
-  end
-
-  if opts.accept_policy == "from-after-cursor" then
-    return pos:before_cursor()
-  elseif opts.accept_policy == "from-cursor" then
-    return pos:before_cursor() or pos:on_cursor()
-  elseif opts.accept_policy == "any" then
-    return true
-  end
-  error("Shouldn't be attainable")
-end
-
----@param opts RH_HopOptions
 ---@param n_is_pointable boolean position can point to a "\n"
 ---@return PI_Position|nil
 local function search_target_position(opts, n_is_pointable)
@@ -89,10 +65,12 @@ local function search_target_position(opts, n_is_pointable)
 
   local count = opts.count
   local final_position = nil
+  local position_checker =
+    new_position_checker(opts.direction, opts.accept_policy, opts.fold_policy)
   while true do
     local potential_target_position = apply_offset(opts, iterator)
 
-    if is_position_acceptable(opts, potential_target_position) then
+    if position_checker:is_suitable(potential_target_position) then
       count = count - 1
       final_position = potential_target_position
     end
@@ -122,6 +100,7 @@ end
 ---@field offset number Advances final position relatively match_position.
 ---@field insert_mode_target_side "left"|"right" side to place the cursor in insert mode.
 ---@field accept_policy "from-after-cursor"|"from-cursor"|"any" Indicates whether a potential position should be accepted.
+---@field fold_policy? "ignore"|"hop-once"|"hop-in-and-open" Decides how to deal with folds.
 ---@field count number count of hops to perform
 
 ---Performs a hop to a given pattern

@@ -49,6 +49,11 @@ M.get_preset = function(buffer_text, cursor_position)
     -- Reset mode
     M.reset_mode()
 
+    -- Reset folds
+    vim.opt.foldmethod = "manual"
+    vim.cmd.normal({ args = { "zE" }, bang = true })
+    vim.opt.foldenable = false
+
     -- Reset options
     vim.go.selection = "inclusive"
 
@@ -73,6 +78,16 @@ M.get_preset = function(buffer_text, cursor_position)
     -- Set the cursor
     M.set_cursor(unpack(cursor_position))
   end
+end
+
+---Creates a closed fold
+---@param start_line number
+---@param end_line number
+M.create_fold = function(start_line, end_line)
+  vim.opt.foldenable = true
+  vim.opt.foldmethod = "manual"
+  local command = tostring(start_line) .. "," .. tostring(end_line) .. "fold"
+  vim.cmd(command)
 end
 
 M.trigger_visual = function()

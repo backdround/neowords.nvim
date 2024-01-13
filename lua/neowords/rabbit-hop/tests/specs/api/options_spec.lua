@@ -172,4 +172,108 @@ describe("main", function()
       end)
     end)
   end)
+
+  describe("fold_policy", function()
+    before_each(function()
+      h.get_preset([[
+        ab ab ab
+        ab ab ab
+        ab ab ab
+        ab ab ab
+      ]], { 2, 7 })()
+      h.create_fold(2, 3)
+    end)
+
+    describe("ignore", function()
+      it("from a folded area should hop out", function()
+        api_helpers.hop(pattern, "forward", "start", {
+          fold_policy = "ignore",
+        })
+        assert.cursor_at(4, 1)
+      end)
+
+      it("from outside a folded area should hop through", function()
+        h.set_cursor(1, 7)
+        api_helpers.hop(pattern, "forward", "start", {
+          fold_policy = "ignore",
+        })
+        assert.cursor_at(4, 1)
+      end)
+    end)
+
+    describe("hop-in-and-open", function()
+      it("should open if hopped in", function()
+        api_helpers.hop(pattern, "forward", "start", {
+          fold_policy = "hop-in-and-open",
+          count = 1,
+        })
+        assert.cursor_at(3, 1)
+        assert.are.same(-1, vim.fn.foldclosed(3))
+      end)
+
+      it("shouldn't open if hopped through", function()
+        h.set_cursor(1, 7)
+        api_helpers.hop(pattern, "forward", "start", {
+          fold_policy = "hop-in-and-open",
+          count = 7,
+        })
+        assert.cursor_at(4, 1)
+        assert.are.same(2, vim.fn.foldclosed(2))
+      end)
+    end)
+
+    describe("hop-once", function()
+      describe("forward", function()
+        it("should hop on a fold", function()
+          h.set_cursor(1, 7)
+          api_helpers.hop(pattern, "forward", "start", {
+            fold_policy = "hop-once",
+          })
+          assert.cursor_at(2, 1)
+        end)
+
+        it("should count as a match", function()
+          h.set_cursor(1, 7)
+          api_helpers.hop(pattern, "forward", "start", {
+            fold_policy = "hop-once",
+            count = 2,
+          })
+          assert.cursor_at(4, 1)
+        end)
+
+        it("shouldn't count as a match when start on", function()
+          api_helpers.hop(pattern, "forward", "start", {
+            fold_policy = "hop-once",
+          })
+          assert.cursor_at(4, 1)
+        end)
+      end)
+
+      describe("backward", function()
+        it("should hop on a fold", function()
+          h.set_cursor(4, 1)
+          api_helpers.hop(pattern, "backward", "start", {
+            fold_policy = "hop-once",
+          })
+          assert.cursor_at(3, 7)
+        end)
+
+        it("should count as a match", function()
+          h.set_cursor(4, 1)
+          api_helpers.hop(pattern, "backward", "start", {
+            fold_policy = "hop-once",
+            count = 2,
+          })
+          assert.cursor_at(1, 7)
+        end)
+
+        it("shouldn't count as a match when start on", function()
+          api_helpers.hop(pattern, "backward", "start", {
+            fold_policy = "hop-once",
+          })
+          assert.cursor_at(1, 7)
+        end)
+      end)
+    end)
+  end)
 end)
