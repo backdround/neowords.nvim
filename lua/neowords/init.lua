@@ -5,7 +5,7 @@ local M = {
     snake_case = "\\v[[:lower:]]+",
     camel_case = "\\v[[:upper:]][[:lower:]]+",
     upper_case = "\\v[[:upper:]]+[[:lower:]]@!",
-    number = "\\v[[:digit:]]+",
+    number = "\\v[-+]?[[:digit:]]+",
     hex_color = "\\v#[[:xdigit:]]+",
 
     any_word = "\\v-@![-_[:lower:][:upper:]]+",
