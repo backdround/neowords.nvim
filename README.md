@@ -68,7 +68,6 @@ local p = neowords.pattern_presets
 
 local bigword_hops = neowords.get_word_hops(
   p.any_word,
-  p.number,
   p.hex_color
 )
 

@@ -1,16 +1,8 @@
 local word_hops = require("neowords.word-hops")
+local pattern_presets = require("neowords.pattern-presets")
 
 local M = {
-  pattern_presets = {
-    snake_case = "\\v[[:lower:]]+",
-    camel_case = "\\v[[:upper:]][[:lower:]]+",
-    upper_case = "\\v[[:upper:]]+[[:lower:]]@!",
-    number = "\\v[-+]?[[:digit:]]+",
-    hex_color = "\\v#[[:xdigit:]]+[[:lower:][:upper:]]@!",
-
-    any_word = "\\v-@![-_[:lower:][:upper:]]+",
-    any_word_number = "\\v-@![-_[:lower:][:upper:][:digit:]]+",
-  }
+  pattern_presets = pattern_presets,
 }
 
 setmetatable(M.pattern_presets, {
