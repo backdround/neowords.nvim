@@ -9,7 +9,8 @@ Table of Contents                            *neowords.nvim-table-of-contents*
   - Big words only                   |neowords.nvim-show-cases-big-words-only|
   - Sub words with dots and commas|neowords.nvim-show-cases-sub-words-with-dots-and-commas|
   - Numbers and hex color words|neowords.nvim-show-cases-numbers-and-hex-color-words|
-3. Configure as you wish                 |neowords.nvim-configure-as-you-wish|
+3. Presets                                             |neowords.nvim-presets|
+4. Configure as you wish                 |neowords.nvim-configure-as-you-wish|
 
 ==============================================================================
 1. Neowords.nvim                                 *neowords.nvim-neowords.nvim*
@@ -30,6 +31,7 @@ folds.
 If you can’t configure your case or think there is a useful preset that
 isn’t presented in the show cases, make an issue!
 
+------------------------------------------------------------------------------
 
 ==============================================================================
 2. Show cases                                       *neowords.nvim-show-cases*
@@ -82,7 +84,6 @@ Configuration ~
     
     local bigword_hops = neowords.get_word_hops(
       p.any_word,
-      p.number,
       p.hex_color
     )
     
@@ -155,11 +156,45 @@ Configuration ~
     vim.keymap.set({ "n", "x", "o" }, "ge", hops.backward_end)
 <
 
-
-
+------------------------------------------------------------------------------
 
 ==============================================================================
-3. Configure as you wish                 *neowords.nvim-configure-as-you-wish*
+3. Presets                                             *neowords.nvim-presets*
+
+Presets are prepared patterns to use by convenient names. Check real patterns
+that stand for the names here
+<https://github.com/backdround/neowords.nvim/blob/main/lua/neowords/pattern-presets.lua>.
+
+Showcase ~
+
+>
+    Data to match:
+    -- showcase_string-FOR_MATCHING_ByDIFFERENTPresets554
+    -- KNumber number99inside -help -999 +413 12
+    -- #C3A9FA #a3a9fa #2a3a4c #IF #define #def #Stop
+<
+
+  ----------------------------------------------------------------------------------------
+  Preset name                         Matches
+  ----------------------------------- ----------------------------------------------------
+  snake_case                          showcase, string, number, inside, help, define
+
+  camel_case                          By, Presets, Number, Stop
+
+  upper_case                          FOR, MATCHING, DIFFERENT, K, IF
+
+  number                              554, 99, -999, +413, 12
+
+  hex_color                           #C3A9FA, #a3a9fa, #2a3a4c, #def
+
+  any_word                            showcase_string-FOR_MATCHING_ByDIFFERENTPresets554
+                                      KNumber number99inside help 999 413 12 C3A9FA a3a9fa
+                                      2a3a4c IF define def Stop
+  ----------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+
+==============================================================================
+4. Configure as you wish                 *neowords.nvim-configure-as-you-wish*
 
 >lua
     local neowords = require("neowords")
