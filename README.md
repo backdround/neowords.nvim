@@ -23,6 +23,8 @@ It:
 If you can't configure your case or think there is a useful
 preset that isn't presented in the show cases, make an issue!
 
+---
+
 ## Show cases
 ### Sub words only
 ```lua
@@ -140,7 +142,36 @@ vim.keymap.set({ "n", "x", "o" }, "ge", hops.backward_end)
 
 </details>
 
-<br>
+
+---
+
+## Presets
+
+Presets are prepared patterns to use by convenient names. Check real patterns
+that stand for the names
+[here](https://github.com/backdround/neowords.nvim/blob/main/lua/neowords/pattern-presets.lua).
+
+<details><summary>Showcase</summary>
+
+```
+Data to match:
+-- showcase_string-FOR_MATCHING_ByDIFFERENTPresets554
+-- KNumber number99inside -help -999 +413 12
+-- #C3A9FA #a3a9fa #2a3a4c #IF #define #def #Stop
+```
+
+| Preset name | Matches
+| - | -
+| snake_case | `showcase`, `string`, `number`, `inside`, `help`, `define`
+| camel_case | `By`, `Presets`, `Number`, `Stop`
+| upper_case | `FOR`, `MATCHING`, `DIFFERENT`, `K`, `IF`
+| number | `554`, `99`, `-999`, `+413`, `12`
+| hex_color | `#C3A9FA`, `#a3a9fa`, `#2a3a4c`, `#def`
+| any_word | `showcase_string-FOR_MATCHING_ByDIFFERENTPresets554` `KNumber` `number99inside` `help` `999` `413` `12` `C3A9FA` `a3a9fa` `2a3a4c` `IF` `define` `def` `Stop`
+
+</details>
+
+---
 
 ## Configure as you wish
 
