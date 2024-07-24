@@ -9,6 +9,7 @@ local M = {
     hex_color = "\\v#[[:xdigit:]]+[[:lower:][:upper:]]@!",
 
     any_word = "\\v-@![-_[:lower:][:upper:]]+",
+    any_word_number = "\\v-@![-_[:lower:][:upper:][:digit:]]+",
   }
 }
 
