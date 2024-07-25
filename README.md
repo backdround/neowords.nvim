@@ -167,7 +167,7 @@ Data to match:
 | upper_case | `FOR`, `MATCHING`, `DIFFERENT`, `K`, `IF`
 | number | `554`, `99`, `-999`, `+413`, `12`
 | hex_color | `#C3A9FA`, `#a3a9fa`, `#2a3a4c`, `#def`
-| any_word | `showcase_string-FOR_MATCHING_ByDIFFERENTPresets554` `KNumber` `number99inside` `help` `999` `413` `12` `C3A9FA` `a3a9fa` `2a3a4c` `IF` `define` `def` `Stop`
+| any_word | `showcase_string-FOR_MATCHING_ByDIFFERENTPresets554`, `KNumber`, `number99inside`, `help`, `999`, `413`, `12`, `C3A9FA`, `a3a9fa`, `2a3a4c`, `IF`, `define`, `def`, `Stop`
 
 </details>
 
