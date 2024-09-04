@@ -5,6 +5,7 @@ describe("pattern-presets", function()
     -- showcase_string-FOR_MATCHING_ByDIFFERENTPresets554
     -- KNumber number99inside -help -999 +413 12
     -- #C3A9FA #a3a9fa #2a3a4c #IF #define #def #Stop
+    -- word-32 word+33 word_34
   ]]
 
   local get_matches = function(text, preset_name)
@@ -21,7 +22,17 @@ describe("pattern-presets", function()
   end
 
   it("snake_case", function()
-    local expected_matches = { "showcase", "string", "number", "inside", "help", "define" }
+    local expected_matches = {
+      "showcase",
+      "string",
+      "number",
+      "inside",
+      "help",
+      "define",
+      "word",
+      "word",
+      "word",
+    }
     local real_matches = get_matches(test_text, "snake_case")
 
     assert.are.same(expected_matches, real_matches)
@@ -42,8 +53,33 @@ describe("pattern-presets", function()
   end)
 
   it("number", function()
-    local expected_matches = { "554", "99", "-999", "+413", "12" }
+    local expected_matches = {
+      "554",
+      "99",
+      "999",
+      "413",
+      "12",
+      "32",
+      "33",
+      "34",
+    }
     local real_matches = get_matches(test_text, "number")
+
+    assert.are.same(expected_matches, real_matches)
+  end)
+
+  it("math_number", function()
+    local expected_matches = {
+      "554",
+      "99",
+      "-999",
+      "+413",
+      "12",
+      "-32",
+      "+33",
+      "34",
+    }
+    local real_matches = get_matches(test_text, "math_number")
 
     assert.are.same(expected_matches, real_matches)
   end)
@@ -71,6 +107,10 @@ describe("pattern-presets", function()
       "define",
       "def",
       "Stop",
+      "word-32",
+      "word",
+      "33",
+      "word_34",
     }
     local real_matches = get_matches(test_text, "any_word")
 

@@ -21,6 +21,12 @@ local M = {
 
   number = "\\v"
     -- Match numbers.
+    .. "[[:digit:]]+"
+    -- Ignore if the match is a hex color (or a part of it).
+    .. "(#[[:xdigit:]]+)@<!",
+
+  math_number = "\\v"
+    -- Match numbers with a sign.
     .. "[-+]?[[:digit:]]+"
     -- Ignore if the match is a hex color (or a part of it).
     .. "(#[[:xdigit:]]+)@<!",

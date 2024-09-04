@@ -158,16 +158,18 @@ Data to match:
 -- showcase_string-FOR_MATCHING_ByDIFFERENTPresets554
 -- KNumber number99inside -help -999 +413 12
 -- #C3A9FA #a3a9fa #2a3a4c #IF #define #def #Stop
+-- word-32 word+33 word_34
 ```
 
 | Preset name | Matches
 | - | -
-| snake_case | `showcase`, `string`, `number`, `inside`, `help`, `define`
+| snake_case | `showcase`, `string`, `number`, `inside`, `help`, `define`, `word`, `word`, `word`
 | camel_case | `By`, `Presets`, `Number`, `Stop`
 | upper_case | `FOR`, `MATCHING`, `DIFFERENT`, `K`, `IF`
-| number | `554`, `99`, `-999`, `+413`, `12`
+| number | `554`, `99`, `999`, `413`, `12`, `32`, `33`, `34`
+| math_number | `554`, `99`, `-999`, `+413`, `12`, `-32`, `+33`, `34`
 | hex_color | `#C3A9FA`, `#a3a9fa`, `#2a3a4c`, `#def`
-| any_word | `showcase_string-FOR_MATCHING_ByDIFFERENTPresets554`, `KNumber`, `number99inside`, `help`, `999`, `413`, `12`, `C3A9FA`, `a3a9fa`, `2a3a4c`, `IF`, `define`, `def`, `Stop`
+| any_word | `showcase_string-FOR_MATCHING_ByDIFFERENTPresets554`, `KNumber`, `number99inside`, `help`, `999`, `413`, `12`, `C3A9FA`, `a3a9fa`, `2a3a4c`, `IF`, `define`, `def`, `Stop`, `word-32`, `word`, `33`, `word_34`
 
 </details>
 
